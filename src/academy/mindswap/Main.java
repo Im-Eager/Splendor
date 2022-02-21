@@ -7,5 +7,4 @@ public class Main {
         System.out.println("WELCOME TO THE GAME");
         System.out.println("Luis is here");
     }
-
 }

@@ -3,8 +3,8 @@ package academy.mindswap.Cards;
 public class Lord extends Card{
 
 
-    public Lord(int cost){
-        super(cost, 3, 4);
+    public Lord(int costWhite, int costBlue, int costGreen, int costRed, int costBlack){
+        super(costWhite, costBlue, costGreen, costRed, costBlack, 3, 4);
     }
 
 }
