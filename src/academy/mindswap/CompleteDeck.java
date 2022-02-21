@@ -11,7 +11,7 @@ public class CompleteDeck {
     List<Card> cards;
 
     public CompleteDeck(){
-        this.cards = new ArrayList<>(
+        this.cards = new ArrayList<Card>(
                 new Mine(10, 100, 3, "red"),
 
 
