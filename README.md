@@ -1,0 +1,5 @@
+# Splendor
+
+Game Rules:
+
+
