@@ -4,6 +4,10 @@ public class Main {
 
     public static void main(String[] args) {
 
+
+        //2 Versions to chose
+
+        //Version 1:
         System.err.println("          /$$$$$$            /$$                           /$$                            ");
         System.err.println("         /$$__  $$          | $$                          | $$                            ");
         System.err.println("        | $$  \\__/  /$$$$$$ | $$  /$$$$$$  /$$$$$$$   /$$$$$$$  /$$$$$$   /$$$$$$         ");
@@ -17,7 +21,7 @@ public class Main {
         System.err.println("                  |__/                                                                    ");
 
 
-
+        //Version 2:
         System.err.println("  /$$$$$$            /$$                           /$$                   ");
         System.err.println(" /$$__  $$          | $$                          | $$                    ");
         System.err.println("| $$  \\__/  /$$$$$$ | $$  /$$$$$$  /$$$$$$$   /$$$$$$$  /$$$$$$   /$$$$$$ ");
