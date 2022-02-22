@@ -14,8 +14,9 @@ public class Server {
     private int port;
     private int numberOfConnections = 0;
 
-    public Server (){
+    public Server () throws IOException {
         this.port = 8080;
+        start();
     }
 
     private void start() throws IOException {
@@ -35,6 +36,7 @@ public class Server {
     public void acceptConnection() throws IOException {
         Socket clientSocket = serverSocket.accept();
         clientConnections.put("Player" + numberOfConnections, clientSocket);
+        System.out.println("Player" + numberOfConnections);
     }
 
     public void launchGame (HashMap hashMap){
