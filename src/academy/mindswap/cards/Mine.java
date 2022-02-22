@@ -1,4 +1,4 @@
-package academy.mindswap.Cards;
+package academy.mindswap.cards;
 
 public class Mine extends Card{
 

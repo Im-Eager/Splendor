@@ -19,12 +19,15 @@ public class Messages {
     //psvm to test if colors are working, delete after
     public static void main(String[] args) {
 
+
         System.out.println(ANSI_BLACK + "This text is black!" + ANSI_RESET);
         System.out.println(ANSI_BLUE + "This text is blue!" + ANSI_RESET);
         System.out.println(ANSI_WHITE + "This text is white!" + ANSI_RESET);
         System.out.println(ANSI_GREEN + "This text is green!" + ANSI_RESET);
         System.out.println(ANSI_RED + "This text is red!" + ANSI_RESET);
         System.out.println(ANSI_YELLOW + "This text is yellow!" + ANSI_RESET);
+
+
 
 
         //2 Versions to chose
