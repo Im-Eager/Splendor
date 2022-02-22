@@ -1,4 +1,4 @@
-package academy.mindswap.game;
+package academy.mindswap.game.decks;
 
 import academy.mindswap.cards.Card;
 import academy.mindswap.cards.Lord;
@@ -8,11 +8,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CompleteDeck {
+public class OriginalDeck {
 
-    List<Card> cards;
+    private final List<Card> cards;
 
-    public CompleteDeck(){
+    public OriginalDeck(){
         this.cards = new ArrayList<Card>(Arrays.asList(
                 //TIER 1
 
@@ -125,8 +125,8 @@ public class CompleteDeck {
                 new Mine(0, 3, 6, 3,0,4, 3, "Red"),
                 new Mine(0, 0, 7, 3,0,5, 3, "Red"),
 
-
                 //Lords
+
                 new Lord(0, 0, 4,4, 0),
                 new Lord(0, 4, 4,0, 0),
                 new Lord(4, 4, 0,0, 0),
@@ -138,5 +138,9 @@ public class CompleteDeck {
                 new Lord(0, 3, 3,3, 0),
                 new Lord(3, 0, 0,3, 3)));
 
+    }
+
+    public List<Card> getDeck(){
+        return this.cards;
     }
 }

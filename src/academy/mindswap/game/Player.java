@@ -11,10 +11,11 @@ public class Player implements Iterable{
     List<Card> playerHand;
     private int gems;
     private int gold;
+    private String name;
 
 
-    public Player(){
-        String name = "player 1";
+    public Player(String name){
+        this.name = name;
     }
 
     public void reserveCard(){

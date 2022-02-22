@@ -1,5 +1,7 @@
 package academy.mindswap.server;
 
+import academy.mindswap.game.Player;
+import academy.mindswap.game.decks.OriginalDeck;
 import academy.mindswap.game.Game;
 
 import java.io.IOException;
@@ -10,7 +12,7 @@ import java.util.HashMap;
 public class Server {
 
     private ServerSocket serverSocket;
-    private HashMap<String, Socket> clientConnections;
+    private HashMap<Player, Socket> clientConnections;
     private int port;
     private int numberOfConnections = 0;
 
@@ -22,7 +24,7 @@ public class Server {
     private void start() throws IOException {
         //FOR NOW ONLY RUNS A GAME AT THE TIME AND ONLY LAUNCH WITH 4 PLAYERS
         this.serverSocket = new ServerSocket(this.port);
-        this.clientConnections = new HashMap<String, Socket>();
+        this.clientConnections = new HashMap<Player, Socket>();
         while (true){
             ++numberOfConnections;
             acceptConnection();
@@ -35,11 +37,13 @@ public class Server {
 
     public void acceptConnection() throws IOException {
         Socket clientSocket = serverSocket.accept();
-        clientConnections.put("Player" + numberOfConnections, clientSocket);
-        System.out.println("Player" + numberOfConnections);
+        String player = "Player" + numberOfConnections;
+        clientConnections.put(new Player(player), clientSocket);
+        System.out.println("Player " + numberOfConnections + " connected.");
     }
 
     public void launchGame (HashMap hashMap){
-        Thread gameRunner = new Thread(new Game(hashMap));
+
+        Thread gameRunner = new Thread(new Game(hashMap, new OriginalDeck().getDeck()));
     }
 }
