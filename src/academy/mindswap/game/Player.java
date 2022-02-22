@@ -9,6 +9,7 @@ public class Player implements Iterable{
 
     Card[] playerReservedCards = new Card[3];
     List<Card> playerHand;
+    private int gems;
     private int gold;
 
 
@@ -28,10 +29,19 @@ public class Player implements Iterable{
     public void grabGems(){
 
 
-
-
     }
 
+    public Card[] getPlayerReservedCards() {
+        return playerReservedCards;
+    }
+
+    public List<Card> getPlayerHand() {
+        return playerHand;
+    }
+
+    public int getGems() {
+        return gems;
+    }
 
     @Override
     public Iterator iterator() {

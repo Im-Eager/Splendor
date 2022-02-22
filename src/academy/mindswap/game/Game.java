@@ -1,13 +1,16 @@
 package academy.mindswap.game;
 
+import academy.mindswap.cards.Card;
 import academy.mindswap.utils.Messages;
 
 import java.net.Socket;
 import java.util.HashMap;
+import java.util.List;
 
 public class Game implements Runnable{
 
     private final HashMap<String, Socket> hashMap;
+    private Player player;
 
     public Game (HashMap hashMap){
         this.hashMap = hashMap;
@@ -18,11 +21,15 @@ public class Game implements Runnable{
 
     }
 
-    public void checkPlayerCards(){
+    public int checkPlayerCards(List<Card> playerHand){
 
+        return player.getPlayerHand()
+                .stream().mapToInt(Card::getPoints)
+                .sum();
     }
 
-    public void checkPlayerTokens(){
+    public int checkPlayerTokens(){
+        return player.getGems();
 
     }
 
@@ -30,7 +37,7 @@ public class Game implements Runnable{
         if (player.getPoints >= 15){
             player.win();
             if(player.getPoints < 15){
-                Messages.loseMessage();
+                Messages.LOSE_MESSAGE();
             }
         }
     }
