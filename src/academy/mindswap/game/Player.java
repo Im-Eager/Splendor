@@ -1,6 +1,6 @@
-package academy.mindswap;
+package academy.mindswap.game;
 
-import academy.mindswap.Cards.Card;
+import academy.mindswap.cards.Card;
 
 import java.util.Iterator;
 import java.util.List;

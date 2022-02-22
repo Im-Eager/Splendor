@@ -1,8 +1,8 @@
-package academy.mindswap;
+package academy.mindswap.game;
 
-import academy.mindswap.Cards.Card;
-import academy.mindswap.Cards.Lord;
-import academy.mindswap.Cards.Mine;
+import academy.mindswap.cards.Card;
+import academy.mindswap.cards.Lord;
+import academy.mindswap.cards.Mine;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,6 +1,6 @@
-package academy.mindswap;
+package academy.mindswap.utils;
 
-public class PrintToTerminal {
+public class PrintToTerminalGame {
 
     /*Print to terminal:
         - PLAYER SCORE;
