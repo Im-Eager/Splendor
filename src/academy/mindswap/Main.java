@@ -10,5 +10,6 @@ public class Main {
 
         Server server = new Server();
 
+        System.out.println("Apagar isto");
     }
 }
