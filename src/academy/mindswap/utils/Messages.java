@@ -2,7 +2,7 @@ package academy.mindswap.utils;
 
 public class Messages {
 
-    //Color utilized in our game
+    //Colors utilized in our game
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_BLUE = "\u001B[34m";
     public static final String ANSI_WHITE = "\u001B[37m";
@@ -16,7 +16,7 @@ public class Messages {
 
     public static final String ANSI_RESET = "\u001B[0m";
 
-
+    //psvm to test if colors are working, delete after
     public static void main(String[] args) {
 
         System.out.println(ANSI_BLACK + "This text is black!" + ANSI_RESET);
@@ -24,6 +24,7 @@ public class Messages {
         System.out.println(ANSI_WHITE + "This text is white!" + ANSI_RESET);
         System.out.println(ANSI_GREEN + "This text is green!" + ANSI_RESET);
         System.out.println(ANSI_RED + "This text is red!" + ANSI_RESET);
+        System.out.println(ANSI_YELLOW + "This text is yellow!" + ANSI_RESET);
 
     }
 }
