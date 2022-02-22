@@ -125,6 +125,8 @@ public class CompleteDeck {
                 new Mine(0, 3, 6, 3,0,4, 3, "Red"),
                 new Mine(0, 0, 7, 3,0,5, 3, "Red"),
 
+
+                //Lords
                 new Lord(0, 0, 4,4, 0),
                 new Lord(0, 4, 4,0, 0),
                 new Lord(4, 4, 0,0, 0),
