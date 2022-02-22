@@ -2,9 +2,10 @@ package academy.mindswap;
 
 import academy.mindswap.Cards.Card;
 
+import java.util.Iterator;
 import java.util.List;
 
-public class Player {
+public class Player implements Iterable{
 
     Card[] playerReservedCards = new Card[3];
     List<Card> playerHand;
@@ -16,6 +17,7 @@ public class Player {
     }
 
     public void reserveCard(){
+        gold ++;
 
     }
 
@@ -25,8 +27,14 @@ public class Player {
 
     public void grabGems(){
 
+
+
+
     }
 
 
-
+    @Override
+    public Iterator iterator() {
+        return null;
+    }
 }
