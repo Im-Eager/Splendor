@@ -1,6 +1,7 @@
 package academy.mindswap;
 
 import academy.mindswap.Cards.Card;
+import academy.mindswap.Cards.Lord;
 import academy.mindswap.Cards.Mine;
 
 import java.util.ArrayList;
@@ -122,7 +123,20 @@ public class CompleteDeck {
                 new Mine(3, 5, 3, 0,3,3, 3, "Red"),
                 new Mine(0, 0, 7, 0,3,4, 3, "Red"),
                 new Mine(0, 3, 6, 3,0,4, 3, "Red"),
-                new Mine(0, 0, 7, 3,0,5, 3, "Red")));
+                new Mine(0, 0, 7, 3,0,5, 3, "Red"),
+
+
+                //Lords
+                new Lord(0, 0, 4,4, 0),
+                new Lord(0, 4, 4,0, 0),
+                new Lord(4, 4, 0,0, 0),
+                new Lord(0, 0, 0,4, 4),
+                new Lord(4, 0, 0,0, 4),
+                new Lord(3, 3, 0,0, 3),
+                new Lord(3, 3, 3,0, 0),
+                new Lord(0, 0, 3,3, 3),
+                new Lord(0, 3, 3,3, 0),
+                new Lord(3, 0, 0,3, 3)));
 
     }
 }
