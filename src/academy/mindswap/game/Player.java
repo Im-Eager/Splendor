@@ -20,36 +20,26 @@ public class Player {
         this.score = 0;
         this.ownedMines = new int[]{0,0,0,0,0};
         this.bank = new int[]{0,0,0,0,0,0};
+        //Position of bank index[0] = (W)hite, index[1] = Bl(U)e, index[2] = (G)reen, index[3] = (R)ed, index[4] = Blac(K), index[5] = Go(L)d
 
     }
 
-    public Card reserveCard(Card card){
-        gold ++;
-        return card;
+    public void reserveCard(Card card){
+        this.bank[5]+=1;
+        playerReservedCards.add(card);
     }
 
     public Card buyCard(Card card){
         return card;
     }
 
-    public void grabGems(){
-
-
-
-    }
-
-    public Card[] getPlayerReservedCards() {
-        Card card = reserveCard();
-        for (int i = 0; i <playerReservedCards.length; i++) {
-            if(playerReservedCards[i] == null){
-                playerReservedCards[i] = card;
-            }else {
-                System.out.println("You cannot reserve more cards");
-                return playerReservedCards;
-            }
+    public void grabGems(int[] grabbedGems){
+        for (int i = 0; i < grabbedGems.length; i++) {
+            bank[i] += grabbedGems[i];
         }
-        return playerReservedCards;
     }
+
+
 
     public List<Card> getPlayerHand() {
 
