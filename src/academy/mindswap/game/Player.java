@@ -11,6 +11,7 @@ public class Player {
     private int[] ownedMines;
     private int[] bank;
     private int score;
+    private boolean playerCanBuy;
 
 
     public Player(String name){
@@ -27,14 +28,70 @@ public class Player {
         playerReservedCards.add(card);
     }
 
-    public Card buyCard(Card card){
-        return card;
-    }
 
     public void grabGems(int[] grabbedGems){
         for (int i = 0; i < grabbedGems.length; i++) {
             bank[i] += grabbedGems[i];
         }
+    }
+
+
+    public Card buyCard(Card card){
+
+        if (canBuyWhite(card) && canBuyBlue(card) && canBuyGreen(card) && canBuyRed(card) && canBuyBlack(card)){
+            playerCanBuy = true;
+        }
+
+        if (playerCanBuy) {
+            this.score += card.getPoints();  //score increased directly on buy
+        }
+        return card;
+    }
+
+
+    private boolean canBuyWhite(Card card){
+        if (card.getCostWhite() <= ownedMines[0]
+                || card.getCostWhite() <= ownedMines[0] + bank[0]
+                || card.getCostWhite() <= ownedMines[0] + bank[0] + bank[5]){
+            return  true;
+        }
+        return false;
+    }
+
+    private boolean canBuyBlue (Card card){
+        if (card.getCostBlue() <= ownedMines[1]
+                || card.getCostBlue() <= ownedMines[1] + bank[1]
+                || card.getCostBlue() <= ownedMines[1] + bank[1] + bank[5]){
+            return  true;
+        }
+        return false;
+    }
+
+    private boolean canBuyGreen (Card card){
+        if (card.getCostGreen() <= ownedMines[2]
+                || card.getCostGreen() <= ownedMines[2] + bank[2]
+                || card.getCostGreen() <= ownedMines[2] + bank[2] + bank[5]){
+            return  true;
+        }
+        return false;
+    }
+
+    private boolean canBuyRed (Card card){
+        if (card.getCostRed() <= ownedMines[3]
+                || card.getCostRed() <= ownedMines[3] + bank[3]
+                || card.getCostRed() <= ownedMines[3] + bank[3] + bank[5]){
+            return  true;
+        }
+        return false;
+    }
+
+    private boolean canBuyBlack (Card card){
+        if (card.getCostBlack() <= ownedMines[4]
+                || card.getCostBlack() <= ownedMines[4] + bank[4]
+                || card.getCostBlack() <= ownedMines[4] + bank[4] + bank[5]){
+            return  true;
+        }
+        return false;
     }
 
 
