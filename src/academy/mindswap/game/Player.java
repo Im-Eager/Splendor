@@ -28,6 +28,7 @@ public class Player {
     public void reserveCard(Card card) {
         if( playerReservedCards.size() == 3){
             System.out.println(Messages.CANT_RESERVE);
+            return;
         }
         this.bank[5] += 1;
         playerReservedCards.add(card);
