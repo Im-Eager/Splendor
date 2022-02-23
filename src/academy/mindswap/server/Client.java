@@ -27,13 +27,13 @@ public class Client {
         String lineSent;
 
         while (true){
-            if ((lineReceived = socketIn.readLine()) != null){
-                System.out.println(lineReceived);
-            }
-
             socketOut.write(consoleIn.read());
             socketOut.newLine();
             socketOut.flush();
+
+            if ((lineReceived = socketIn.readLine()) != null){
+                System.out.println(lineReceived);
+            }
         }
     }
 }

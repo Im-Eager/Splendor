@@ -1,11 +1,8 @@
 package academy.mindswap.game;
 
 import academy.mindswap.cards.Card;
-import academy.mindswap.utils.Messages;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.net.Socket;
 import java.util.*;
 
@@ -15,14 +12,14 @@ public class Game implements Runnable {
 
     private final HashMap<Player, Socket> players;
 
-    private HashMap<String, Card> table;
+    private HashMap<String, Card> table = new HashMap<>();
 
     private boolean winner;
 
-    private LinkedList<Card> deckTier4;
-    private LinkedList<Card> deckTier3;
-    private LinkedList<Card> deckTier2;
-    private LinkedList<Card> deckTier1;
+    private LinkedList<Card> deckTier4 = new LinkedList<Card>();
+    private LinkedList<Card> deckTier3 = new LinkedList<Card>();
+    private LinkedList<Card> deckTier2 = new LinkedList<Card>();
+    private LinkedList<Card> deckTier1 = new LinkedList<Card>();
 
     public Game(HashMap players, List<Card> deck) {
 
@@ -79,28 +76,38 @@ public class Game implements Runnable {
     @Override
     public void run() {
 
-
         try {
-            Socket socket = new Socket();
-            String command;
-            BufferedReader br = null;
 
-            br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            String command;
+
+            Player player = players.keySet().stream().findFirst().get();
+            Socket socket = players.get(player);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+            BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+
+            wr.write("Cheguei aqui");
+
             while (!winner) {
 
-                Player playerPlaying;
+                Player playerPlaying = player;
+
+                socket = players.get(playerPlaying);
+
                 command = br.readLine();
 
+                wr.write(command);
 
             }
-
 
         } catch (IOException e) {
             e.printStackTrace();
         }
 
-    }
 
+    }
+}
+/*
     public int checkPlayerCards(List<Card> playerHand) {
 
         return player.getPlayerHand()
@@ -126,4 +133,4 @@ public class Game implements Runnable {
 
     }
 
-}
+}*/

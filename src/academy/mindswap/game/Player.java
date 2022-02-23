@@ -2,9 +2,7 @@ package academy.mindswap.game;
 
 import academy.mindswap.cards.Card;
 
-import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Player {
 
@@ -41,7 +39,7 @@ public class Player {
 
 
 
-    public List<Card> getPlayerHand() {
+    /*public List<Card> getPlayerHand() {
 
         return playerHand;
     }
@@ -53,5 +51,5 @@ public class Player {
     @Override
     public Iterator iterator() {
         return null;
-    }
+    }*/
 }
