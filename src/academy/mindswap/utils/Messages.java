@@ -88,5 +88,35 @@ public class Messages {
         System.err.println("          | $$                                                            ");
         System.err.println("          |__/                                                            ");
 
+        //Game Board
+        System.err.println("                                        _____                        ____                      _ ");
+        System.err.println("                                       / ____|                      |  _ \\                    | |");
+        System.err.println("                                      | |  __  __ _ _ __ ___   ___  | |_) | ___   __ _ _ __ __| |");
+        System.err.println("                                      | | |_ |/ _` | '_ ` _ \\ / _ \\ |  _ < / _ \\ / _` | '__/ _` |");
+        System.err.println("                                      | |__| | (_| | | | | | |  __/ | |_) | (_) | (_| | | | (_| |");
+        System.err.println("                                       \\_____|\\__,_|_| |_| |_|\\___| |____/ \\___/ \\__,_|_|  \\__,_|");
+        System.err.println("                                                            ");
+        System.out.println("");
+        System.out.println("                   _____________________________________________________________________________________________________");
+        System.out.println("                   ----------P41---------    ----------P42---------    ---------P43----------    ----------P44---------");
+        System.out.println("Bank:             |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |");
+        System.out.println("                  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |");
+        System.out.println("(W)hite -> 7      ----------------------    ----------------------    ----------------------    ----------------------");
+        System.out.println("Bl(U)e  -> 7      ______________________________________________________________________________________________________");
+        System.out.println("(G)reen -> 7       ----------P31---------    ----------P32---------    ---------P33----------    ----------P34---------");
+        System.out.println("(R)ed	-> 7      |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |");
+        System.out.println("Blac(K) -> 7	  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |");
+        System.out.println("                   ----------------------    ----------------------    ----------------------    ----------------------");
+        System.out.println("Go(L)d  -> 5	   ----------P21---------    ----------P22---------    ---------P23----------    ----------P24---------");
+        System.out.println("                  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |");
+        System.out.println("	              |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |");
+        System.out.println("                   ----------------------    ----------------------    ----------------------    ----------------------");
+        System.out.println("                   ----------P11---------    ----------P12---------    ---------P13----------    ----------P14---------");
+        System.out.println("                  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |");
+        System.out.println("	              |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |");
+        System.out.println("                   ----------------------    ----------------------    ----------------------    ----------------------");
+
+
+
     }
 }
