@@ -3,6 +3,7 @@ package academy.mindswap.game;
 import academy.mindswap.cards.Card;
 import academy.mindswap.server.Server;
 import academy.mindswap.utils.Messages;
+import academy.mindswap.utils.PrintToTerminalGame;
 
 import java.io.*;
 import java.net.Socket;
@@ -40,22 +41,9 @@ public class Game implements Runnable {
     }
 
     private void gameSetup() {
-
-        System.out.println(Messages.WELCOME_MESSAGE1);
-        System.out.println(Messages.WELCOME_MESSAGE2);
-        System.out.println(Messages.WELCOME_MESSAGE3);
-        System.out.println(Messages.WELCOME_MESSAGE4);
-        System.out.println(Messages.WELCOME_MESSAGE5);
-        System.out.println(Messages.WELCOME_MESSAGE6);
-        System.out.println(Messages.WELCOME_MESSAGE6);
-        System.out.println(Messages.WELCOME_MESSAGE8);
-        System.out.println(Messages.WELCOME_MESSAGE9);
-        System.out.println(Messages.WELCOME_MESSAGE10);
-        System.out.println(Messages.WELCOME_MESSAGE11);
-        System.out.println(Messages.WELCOME_MESSAGE12);
-
-
-
+        PrintToTerminalGame.startScreen();
+        clearScreen();
+        PrintToTerminalGame.screenSetup();
 
         fillBank();
 
@@ -69,14 +57,14 @@ public class Game implements Runnable {
             for (int j = 0; j < 4; j++) {
                 Card cardToGive = tiersCardGiver.get(i).get(j);
                 tiersCardGiver.get(i).remove(cardToGive);
-                this.table.put("p" + Integer.toString(i + 1) + Integer.toString(j + 1), cardToGive);
+                this.table.put("p" + (i + 1) + (j + 1), cardToGive);
             }
         }
 
         for (int i = 0; i < this.players.size(); i++) {
             Card cardToGive = this.deckTier4.get(i);
             this.deckTier4.remove(cardToGive);
-            this.table.put("p4" + Integer.toString(i + 1), cardToGive);
+            this.table.put("p4" + (i + 1), cardToGive);
         }
     }
 
@@ -94,24 +82,55 @@ public class Game implements Runnable {
     @Override
     public void run() {
         gameSetup();
+//
+//        try {
+//
+//            while (!winner) {
+//
+//                Player playerPlaying = player;
+//
+//                socket = players.get(playerPlaying);
+//
+//                command = br.readLine();
+//
+//                bw.write(command);
+//
+//            }
+//
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+    }
 
-        try {
 
-            while (!winner) {
 
-                Player playerPlaying = player;
+    private void clearScreen(){
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
+        System.out.println("");
 
-                socket = players.get(playerPlaying);
-
-                command = br.readLine();
-
-                bw.write(command);
-
-            }
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
 }

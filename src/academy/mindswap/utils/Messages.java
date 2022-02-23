@@ -3,8 +3,6 @@ package academy.mindswap.utils;
 public class Messages {
 
 
-
-
     //Colors utilized in our game
     public static final String ANSI_BLACK = "\u001B[30m";
     public static final String ANSI_BLUE = "\u001B[34m";
@@ -38,11 +36,37 @@ public class Messages {
     public static final String WELCOME_MESSAGE7 = " /$$  \\ $$| $$  | $$| $$| $$_____/| $$  | $$| $$  | $$| $$  | $$| $$      ";
     public static final String WELCOME_MESSAGE8 = "|  $$$$$$/| $$$$$$$/| $$|  $$$$$$$| $$  | $$|  $$$$$$$|  $$$$$$/| $$      ";
     public static final String WELCOME_MESSAGE9 = " \\______/ | $$____/ |__/ \\_______/|__/  |__/ \\_______/ \\______/ |__/      ";
-    public static final String WELCOME_MESSAGE10 ="          | $$                                                            ";
-    public static final String WELCOME_MESSAGE11 ="          | $$                                                            ";
-    public static final String WELCOME_MESSAGE12 ="          |__/                                                            ";
+    public static final String WELCOME_MESSAGE10 = "          | $$                                                            ";
+    public static final String WELCOME_MESSAGE11 = "          | $$                                                            ";
+    public static final String WELCOME_MESSAGE12 = "          |__/                                                            ";
 
 
+    public static final String SCREEN_SETUP1 = "                                        _____                        ____                      _ ";
+    public static final String SCREEN_SETUP2 = "                                       / ____|                      |  _ \\                    | |";
+    public static final String SCREEN_SETUP3 = "                                      | |  __  __ _ _ __ ___   ___  | |_) | ___   __ _ _ __ __| |";
+    public static final String SCREEN_SETUP4 = "                                      | | |_ |/ _` | '_ ` _ \\ / _ \\ |  _ < / _ \\ / _` | '__/ _` |";
+    public static final String SCREEN_SETUP5 = "                                      | |__| | (_| | | | | | |  __/ | |_) | (_) | (_| | | | (_| |";
+    public static final String SCREEN_SETUP6 = "                                       \\_____|\\__,_|_| |_| |_|\\___| |____/ \\___/ \\__,_|_|  \\__,_|";
+    public static final String SCREEN_SETUP7 = "                                                            ";
+    public static final String SCREEN_SETUP8 = "";
+    public static final String SCREEN_SETUP9 = "                   _____________________________________________________________________________________________________";
+    public static final String SCREEN_SETUP10 = "                   ----------P41---------    ----------P42---------    ---------P43----------    ----------P44---------";
+    public static final String SCREEN_SETUP11 = "Bank:             |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |";
+    public static final String SCREEN_SETUP12 = "                  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |";
+    public static final String SCREEN_SETUP13 = "(W)hite -> 7      ----------------------    ----------------------    ----------------------    ----------------------";
+    public static final String SCREEN_SETUP14 = "Bl(U)e  -> 7      ______________________________________________________________________________________________________";
+    public static final String SCREEN_SETUP15 = "(G)reen -> 7       ----------P31---------    ----------P32---------    ---------P33----------    ----------P34---------";
+    public static final String SCREEN_SETUP16 = "(R)ed	-> 7      |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |";
+    public static final String SCREEN_SETUP16 = "Blac(K) -> 7	  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |";
+    public static final String SCREEN_SETUP18 = "                   ----------------------    ----------------------    ----------------------    ----------------------";
+    public static final String SCREEN_SETUP19 = "Go(L)d  -> 5	   ----------P21---------    ----------P22---------    ---------P23----------    ----------P24---------";
+    public static final String SCREEN_SETUP20 = "                  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |";
+    public static final String SCREEN_SETUP21 = "	              |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |";
+    public static final String SCREEN_SETUP22 = "                   ----------------------    ----------------------    ----------------------    ----------------------";
+    public static final String SCREEN_SETUP23 = "                   ----------P11---------    ----------P12---------    ---------P13----------    ----------P14---------";
+    public static final String SCREEN_SETUP24 = "                  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |";
+    public static final String SCREEN_SETUP25 = "	              |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |";
+    public static final String SCREEN_SETUP26 = "                   ----------------------    ----------------------    ----------------------    ---------------------";
 
 
     //psvm to test if colors are working, delete after
@@ -55,8 +79,6 @@ public class Messages {
         System.out.println(ANSI_GREEN + "This text is green!" + ANSI_RESET);
         System.out.println(ANSI_RED + "This text is red!" + ANSI_RESET);
         System.out.println(ANSI_YELLOW + "This text is yellow!" + ANSI_RESET);
-
-
 
 
         //2 Versions to chose
@@ -115,7 +137,6 @@ public class Messages {
         System.out.println("                  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |");
         System.out.println("	              |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |");
         System.out.println("                   ----------------------    ----------------------    ----------------------    ----------------------");
-
 
 
     }
