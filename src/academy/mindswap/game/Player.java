@@ -18,13 +18,13 @@ public class Player implements Iterable{
         this.name = name;
     }
 
-    public void reserveCard(){
+    public Card reserveCard(Card card){
         gold ++;
-
+        return card;
     }
 
-    public void buyCard(){
-
+    public Card buyCard(Card card){
+        return card;
     }
 
     public void grabGems(){
@@ -33,10 +33,20 @@ public class Player implements Iterable{
     }
 
     public Card[] getPlayerReservedCards() {
+        Card card = reserveCard();
+        for (int i = 0; i <playerReservedCards.length; i++) {
+            if(playerReservedCards[i] == null){
+                playerReservedCards[i] = card;
+            }else {
+                System.out.println("You cannot reserve more cards");
+                return playerReservedCards;
+            }
+        }
         return playerReservedCards;
     }
 
     public List<Card> getPlayerHand() {
+
         return playerHand;
     }
 
