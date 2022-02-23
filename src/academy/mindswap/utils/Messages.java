@@ -57,7 +57,7 @@ public class Messages {
     public static final String SCREEN_SETUP14 = "Bl(U)e  -> 7      ______________________________________________________________________________________________________";
     public static final String SCREEN_SETUP15 = "(G)reen -> 7       ----------P31---------    ----------P32---------    ---------P33----------    ----------P34---------";
     public static final String SCREEN_SETUP16 = "(R)ed	-> 7      |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |";
-    public static final String SCREEN_SETUP16 = "Blac(K) -> 7	  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |";
+    public static final String SCREEN_SETUP17 = "Blac(K) -> 7	  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |  |1w + 1B + 0G + 0R +1B |";
     public static final String SCREEN_SETUP18 = "                   ----------------------    ----------------------    ----------------------    ----------------------";
     public static final String SCREEN_SETUP19 = "Go(L)d  -> 5	   ----------P21---------    ----------P22---------    ---------P23----------    ----------P24---------";
     public static final String SCREEN_SETUP20 = "                  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |  |Points[ ]             |";

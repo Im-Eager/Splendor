@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
@@ -23,7 +24,8 @@ public class Server {
     private final List<ClientConnectionHandler> clients;
 
     public Server() throws IOException {
-        clients = new CopyOnWriteArrayList<>();
+//        clients = new CopyOnWriteArrayList<>();
+        clients = new ArrayList<>();
         start(8080);
     }
 
@@ -33,8 +35,8 @@ public class Server {
         int numberOfConnections = 0;
 
         while (true) {
-            acceptConnection(numberOfConnections);
             ++numberOfConnections;
+            acceptConnection(numberOfConnections);
 
             if (clients.size() == 4){
                 launchGame(clients);
@@ -43,7 +45,7 @@ public class Server {
     }
 
     public void launchGame (List<ClientConnectionHandler> playersList){
-        System.out.println("Game starting.");
+
         Thread gameRunner = new Thread(new Game(playersList, new OriginalDeck().getDeck()));
     }
 

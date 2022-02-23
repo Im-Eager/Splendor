@@ -32,6 +32,8 @@ public class Game implements Runnable {
 
         this.players = players;
 
+        players.forEach((p) -> p = new Player("Player"));
+
         for (Card c: deck) {
             c.getColor();
         }
@@ -43,7 +45,13 @@ public class Game implements Runnable {
 
     private void gameSetup() {
         PrintToTerminalGame.startScreen();
+        try {
+            Thread.sleep(6000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         PrintToTerminalGame.screenSetup();
+
 
         fillBank();
 
@@ -82,7 +90,7 @@ public class Game implements Runnable {
 
     @Override
     public void run() {
-        gameSetup();
+//        gameSetup();
 
 
 

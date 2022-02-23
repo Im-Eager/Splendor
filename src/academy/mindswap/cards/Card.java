@@ -21,6 +21,16 @@ public abstract class Card {
         this.color = color;
     }
 
+    public Card(int costWhite, int costBlue, int costGreen, int costRed, int costBlack, int points, int tier) {
+        this.costWhite = costWhite;
+        this.costBlue = costBlue;
+        this.costGreen = costGreen;
+        this.costRed = costRed;
+        this.costBlack = costBlack;
+        this.points = points;
+        this.tier = tier;
+    }
+
     public int getCostWhite() {
         return costWhite;
     }
