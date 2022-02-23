@@ -2,6 +2,7 @@ package academy.mindswap.game;
 
 import academy.mindswap.cards.Card;
 import academy.mindswap.server.Server;
+import academy.mindswap.utils.Messages;
 
 import java.io.*;
 import java.net.Socket;
@@ -39,6 +40,20 @@ public class Game implements Runnable {
     }
 
     private void gameSetup() {
+
+        System.out.println(Messages.WELCOME_MESSAGE1);
+        System.out.println(Messages.WELCOME_MESSAGE2);
+        System.out.println(Messages.WELCOME_MESSAGE3);
+        System.out.println(Messages.WELCOME_MESSAGE4);
+        System.out.println(Messages.WELCOME_MESSAGE5);
+        System.out.println(Messages.WELCOME_MESSAGE6);
+        System.out.println(Messages.WELCOME_MESSAGE6);
+        System.out.println(Messages.WELCOME_MESSAGE8);
+        System.out.println(Messages.WELCOME_MESSAGE9);
+        System.out.println(Messages.WELCOME_MESSAGE10);
+        System.out.println(Messages.WELCOME_MESSAGE11);
+        System.out.println(Messages.WELCOME_MESSAGE12);
+
 
 
 
