@@ -32,6 +32,10 @@ public class Game implements Runnable {
 
         this.players = players;
 
+        for (Card c: deck) {
+            c.getColor();
+        }
+
         gameSetup();
 
         run();
