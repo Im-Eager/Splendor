@@ -8,8 +8,9 @@ public abstract class Card {
     protected int costBlack;
     protected int points;
     protected int tier; //levels High 3, Medium 2, Low 1
+    protected String color;
 
-    public Card(int costWhite, int costBlue, int costGreen, int costRed, int costBlack, int points, int tier){
+    public Card(int costWhite, int costBlue, int costGreen, int costRed, int costBlack, int points, int tier, String color){
         this.costWhite = costWhite;
         this.costBlue = costBlue;
         this.costGreen = costGreen;
@@ -17,6 +18,7 @@ public abstract class Card {
         this.costBlack = costBlack;
         this.points = points;
         this.tier = tier;
+        this.color = color;
     }
 
     public int getCostWhite() {
@@ -47,5 +49,7 @@ public abstract class Card {
         return tier;
     }
 
-
+    public String getColor() {
+        return color;
+    }
 }

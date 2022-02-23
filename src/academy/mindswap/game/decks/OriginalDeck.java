@@ -138,9 +138,11 @@ public class OriginalDeck {
                 new Lord(0, 3, 3,3, 0),
                 new Lord(3, 0, 0,3, 3)));
 
+
     }
 
     public List<Card> getDeck(){
         return this.cards;
     }
+
 }
