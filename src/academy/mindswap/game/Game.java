@@ -40,6 +40,8 @@ public class Game implements Runnable {
 
     private void gameSetup() {
 
+
+
         fillBank();
 
         ArrayList<LinkedList<Card>> tiersCardGiver = new ArrayList<>();
@@ -98,31 +100,3 @@ public class Game implements Runnable {
     }
 
 }
-
-/*
-//    public int checkPlayerCards(List<Card> playerHand) {
-//
-//        return player.getPlayerHand()
-//                .stream().mapToInt(Card::getPoints)
-//                .sum();
-//    }
-//
-//    public int checkPlayerTokens() {
-//        return player.getGems();
-//
-//    }
-//
-//    public void checkPlayerPoints() {
-//        if (player.getPoints >= 15) {
-//            player.win();
-//            if (player.getPoints < 15) {
-//                Messages.LOSE_MESSAGE();
-//            }
-//        }
-//    }
-//
-//    public void updatePlayerScore() {
-//
-//    }
-
-}*/

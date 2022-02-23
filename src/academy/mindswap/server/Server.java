@@ -173,6 +173,7 @@ public class Server {
             return player;
         }
     }
+
 }
 
 
@@ -184,6 +185,7 @@ import academy.mindswap.game.Player;
 import academy.mindswap.game.decks.OriginalDeck;
 import academy.mindswap.game.Game;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -205,6 +207,8 @@ public class Server {
         //FOR NOW ONLY RUNS A GAME AT THE TIME AND ONLY LAUNCH WITH 4 PLAYERS
         this.serverSocket = new ServerSocket(this.port);
         this.clientConnections = new HashMap<Player, Socket>();
+
+
         while (true){
             ++numberOfConnections;
             acceptConnection();
