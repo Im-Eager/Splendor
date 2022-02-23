@@ -1,49 +1,74 @@
 package academy.mindswap.game;
 
 import academy.mindswap.cards.Card;
-import academy.mindswap.game.decks.OriginalDeck;
 import academy.mindswap.utils.Messages;
 
 import java.net.Socket;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class Game implements Runnable{
 
-    private final HashMap<Player, Socket> hashMap;
+    private int[] bank;
 
-    private OriginalDeck deck;
+    private final HashMap<Player, Socket> players;
 
-    private HashMap<String, Card> tableTier4;
-    private HashMap<String, Card> tableTier3;
-    private HashMap<String, Card> tableTier2;
-    private HashMap<String, Card> tableTier1;
+    private HashMap<String, Card> table;
 
-    private List<Card> deckTier4;
-    private List<Card> deckTier3;
-    private List<Card> deckTier2;
-    private List<Card> deckTier1;
+    private LinkedList<Card> deckTier4;
+    private LinkedList<Card> deckTier3;
+    private LinkedList<Card> deckTier2;
+    private LinkedList<Card> deckTier1;
 
     public Game (HashMap hashMap, List<Card> deck){
 
         Collections.shuffle(deck);
 
-        this.deckTier1 = deck.stream().filter(t -> t.getTier()==1).collect(Collectors.toList());
-        this.deckTier2 = deck.stream().filter(t -> t.getTier()==2).collect(Collectors.toList());
-        this.deckTier3 = deck.stream().filter(t -> t.getTier()==3).collect(Collectors.toList());
-        this.deckTier4 = deck.stream().filter(t -> t.getTier()==4).collect(Collectors.toList());
+        this.deckTier1.addAll(deck.stream().filter(t -> t.getTier()==1).toList());
+        this.deckTier2.addAll(deck.stream().filter(t -> t.getTier()==2).toList());
+        this.deckTier3.addAll(deck.stream().filter(t -> t.getTier()==3).toList());
+        this.deckTier4.addAll(deck.stream().filter(t -> t.getTier()==4).toList());
 
-        this.hashMap = hashMap;
+        this.players = hashMap;
+
         gameSetup();
+
         run();
     }
 
     private void gameSetup(){
 
-        for (int i = 0; i < 3; i++) {
+        fillBank();
 
+        ArrayList<LinkedList<Card>> tiersCardGiver = new ArrayList<>();
+
+        tiersCardGiver.add(deckTier1);
+        tiersCardGiver.add(deckTier2);
+        tiersCardGiver.add(deckTier3);
+
+        for (int i = 0; i < 2; i++) {
+            for (int j = 0; j < 3; j++) {
+                Card cardToGive = tiersCardGiver.get(i).get(j);
+                tiersCardGiver.get(i).remove(cardToGive);
+                table.put("p" + Integer.toString(i + 1) + Integer.toString(j + 1), cardToGive);
+            }
         }
 
+        for (int i = 0; i < players.size(); i++) {
+            Card cardToGive = deckTier4.get(i);
+            deckTier4.remove(cardToGive);
+            table.put("p4" + Integer.toString(i + 1), cardToGive);
+        }
+    }
+
+    private void fillBank(){
+        int numOfChips = 7;
+        if (players.size() == 3){
+            numOfChips -= 2;
+        }
+        if (players.size() == 2){
+            numOfChips -= 3;
+        }
+        this.bank = new int[]{numOfChips,numOfChips,numOfChips,numOfChips,numOfChips,5};
     }
 
 
