@@ -3,19 +3,24 @@ package academy.mindswap.game;
 import academy.mindswap.cards.Card;
 
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 
-public class Player implements Iterable{
+public class Player {
 
-    Card[] playerReservedCards = new Card[3];
-    List<Card> playerHand;
-    private int gems;
-    private int gold;
     private String name;
+    private LinkedList<Card> playerReservedCards;
+    private int[] ownedMines;
+    private int[] bank;
+    private int score;
 
 
     public Player(String name){
         this.name = name;
+        this.score = 0;
+        this.ownedMines = new int[]{0,0,0,0,0};
+        this.bank = new int[]{0,0,0,0,0,0};
+
     }
 
     public Card reserveCard(Card card){

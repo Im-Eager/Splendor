@@ -1,7 +1,6 @@
 package academy.mindswap.game;
 
 import academy.mindswap.cards.Card;
-import academy.mindswap.utils.Messages;
 
 import java.net.Socket;
 import java.util.*;
@@ -13,6 +12,8 @@ public class Game implements Runnable{
     private final HashMap<Player, Socket> players;
 
     private HashMap<String, Card> table;
+
+    private boolean winner;
 
     private LinkedList<Card> deckTier4;
     private LinkedList<Card> deckTier3;
@@ -32,7 +33,11 @@ public class Game implements Runnable{
 
         gameSetup();
 
-        run();
+        gameRun();
+//        run();
+
+
+
     }
 
     private void gameSetup(){
@@ -62,7 +67,7 @@ public class Game implements Runnable{
 
     private void fillBank(){
         int numOfChips = 7;
-        if (players.size() == 3){
+        if (players.size() ==3 ){
             numOfChips -= 2;
         }
         if (players.size() == 2){
@@ -72,34 +77,51 @@ public class Game implements Runnable{
     }
 
 
-    @Override
-    public void run() {
+    public void gameRun(){
 
-    }
+        while (!winner) {
 
-    public int checkPlayerCards(List<Card> playerHand){
+            Player playerPlaying;
 
-        return player.getPlayerHand()
-                .stream().mapToInt(Card::getPoints)
-                .sum();
-    }
 
-    public int checkPlayerTokens(){
-        return player.getGems();
 
-    }
-
-    public void checkPlayerPoints(){
-        if (player.getPoints >= 15){
-            player.win();
-            if(player.getPoints < 15){
-                Messages.LOSE_MESSAGE();
-            }
         }
-    }
-
-    public void updatePlayerScore(){
 
     }
+
+
+
+
+
+
+//    @Override
+//    public void run() {
+//
+//    }
+//
+//    public int checkPlayerCards(List<Card> playerHand){
+//
+//        return player.getPlayerHand()
+//                .stream().mapToInt(Card::getPoints)
+//                .sum();
+//    }
+//
+//    public int checkPlayerTokens(){
+//        return player.getGems();
+//
+//    }
+//
+//    public void checkPlayerPoints(){
+//        if (player.getPoints >= 15){
+//            player.win();
+//            if(player.getPoints < 15){
+//                Messages.LOSE_MESSAGE();
+//            }
+//        }
+//    }
+//
+//    public void updatePlayerScore(){
+//
+//    }
 
 }
