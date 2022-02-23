@@ -14,6 +14,7 @@ public class Player {
     private int[] bank;
     private int score;
     private boolean playerCanBuy;
+    private boolean hasPlayed;
 
 
     public Player(String name) {
@@ -21,22 +22,25 @@ public class Player {
         this.score = 0;
         this.ownedMines = new int[]{0, 0, 0, 0, 0};
         this.bank = new int[]{0, 0, 0, 0, 0, 0};
+        this.hasPlayed = false;
         //Position of bank index[0] = (W)hite, index[1] = Bl(U)e, index[2] = (G)reen, index[3] = (R)ed, index[4] = Blac(K), index[5] = Go(L)d
 
     }
 
     public void reserveCard(Card card) {
+        this.hasPlayed = false;
         if( playerReservedCards.size() == 3){
             System.out.println(Messages.CANT_RESERVE);
             return;
         }
         this.bank[5] += 1;
         playerReservedCards.add(card);
+        this.hasPlayed = true;
     }
 
 
     public void grabGems(int[] grabbedGems) {
-
+        this.hasPlayed = false;
         int[] temp = bank;
 
         for (int i = 0; i < grabbedGems.length; i++) {
@@ -49,14 +53,15 @@ public class Player {
             return;
         }
         bank = temp;
-
+        this.hasPlayed = true;
     }
 
 
     public void buyCard(Card card) {
-
+        this.hasPlayed = false;
         if (canBuyWhite(card) && canBuyBlue(card) && canBuyGreen(card) && canBuyRed(card) && canBuyBlack(card)) {
             this.score += card.getPoints();  //score increased directly on buy
+            this.hasPlayed = true;
             return;
         }
 

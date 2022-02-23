@@ -107,13 +107,14 @@ public class Server {
                 Scanner in = new Scanner(clientSocket.getInputStream());
                 while (in.hasNext()) {
                     message = in.nextLine();
-                    /*if (isCommand(message)) {
-                        dealWithCommand(message);
-                        continue;
-                    }*/
-                    if (message.equals("")) {
-                        continue;
-                    }
+
+//                    if (isCommand(message)) {
+//                        dealWithCommand(message);
+//                        continue;
+//                    }
+//                    if (message.equals("")) {
+//                        continue;
+//                    }
 
                     broadcast(name, message);
                 }
@@ -125,7 +126,7 @@ public class Server {
         }
 
         private boolean isCommand(String message) {
-            return message.startsWith("/");
+            return message.startsWith(":");
         }
 
         /*private void dealWithCommand(String message) throws IOException {

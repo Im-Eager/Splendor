@@ -2,11 +2,8 @@ package academy.mindswap.game;
 
 import academy.mindswap.cards.Card;
 import academy.mindswap.server.Server;
-import academy.mindswap.utils.Messages;
 import academy.mindswap.utils.PrintToTerminalGame;
 
-import java.io.*;
-import java.net.Socket;
 import java.util.*;
 
 public class Game implements Runnable {
@@ -42,7 +39,6 @@ public class Game implements Runnable {
 
     private void gameSetup() {
         PrintToTerminalGame.startScreen();
-        clearScreen();
         PrintToTerminalGame.screenSetup();
 
         fillBank();
@@ -79,9 +75,13 @@ public class Game implements Runnable {
         this.bank = new int[]{numOfChips, numOfChips, numOfChips, numOfChips, numOfChips, 5};
     }
 
+
     @Override
     public void run() {
         gameSetup();
+
+
+
 //
 //        try {
 //
@@ -100,37 +100,6 @@ public class Game implements Runnable {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-    }
-
-
-
-    private void clearScreen(){
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-        System.out.println("");
-
     }
 
 }

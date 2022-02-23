@@ -1,9 +1,9 @@
 package academy.mindswap.commands;
 
 public enum Command {
-    BUY("B", new BuyHandler()),
-    GRAB("G", new GrabHandler()),
-    RESERVE("R", new ReserveHandler());
+    BUY("BUY", new BuyHandler()),
+    GRAB("GRAB", new GrabHandler()),
+    RESERVE("RESERVE", new ReserveHandler());
 
     private String description;
     private CommandHandler handler;
