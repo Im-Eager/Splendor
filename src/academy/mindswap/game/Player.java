@@ -56,12 +56,10 @@ public class Player {
     public void buyCard(Card card) {
 
         if (canBuyWhite(card) && canBuyBlue(card) && canBuyGreen(card) && canBuyRed(card) && canBuyBlack(card)) {
-            playerCanBuy = true;
+            this.score += card.getPoints();  //score increased directly on buy
+            return;
         }
 
-        if (playerCanBuy) {
-            this.score += card.getPoints();  //score increased directly on buy
-        }
         System.out.println(Messages.CANT_BUY);
     }
 
