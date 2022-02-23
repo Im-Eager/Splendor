@@ -30,6 +30,7 @@ public class Player implements Iterable{
     public void grabGems(){
 
 
+
     }
 
     public Card[] getPlayerReservedCards() {
