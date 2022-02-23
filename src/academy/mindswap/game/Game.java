@@ -1,6 +1,7 @@
 package academy.mindswap.game;
 
 import academy.mindswap.cards.Card;
+import academy.mindswap.server.Server;
 
 import java.io.*;
 import java.net.Socket;
@@ -10,7 +11,7 @@ public class Game implements Runnable {
 
     private int[] bank;
 
-    private final HashMap<Player, Socket> players;
+    private final List<Server.ClientConnectionHandler> players;
 
     private HashMap<String, Card> table = new HashMap<>();
 
@@ -21,7 +22,7 @@ public class Game implements Runnable {
     private LinkedList<Card> deckTier2 = new LinkedList<Card>();
     private LinkedList<Card> deckTier1 = new LinkedList<Card>();
 
-    public Game(HashMap players, List<Card> deck) {
+    public Game(List players, List<Card> deck) {
 
         Collections.shuffle(deck);
 
@@ -79,16 +80,6 @@ public class Game implements Runnable {
 
         try {
 
-            String command;
-
-            Player player = players.keySet().stream().findFirst().get();
-            Socket socket = players.get(player);
-
-            BufferedReader br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-            BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-
-            wr.write("Cheguei aqui");
-
             while (!winner) {
 
                 Player playerPlaying = player;
@@ -97,15 +88,13 @@ public class Game implements Runnable {
 
                 command = br.readLine();
 
-                wr.write(command);
+                bw.write(command);
 
             }
 
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-
     }
 
 }

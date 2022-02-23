@@ -15,24 +15,52 @@ public class Client {
     }
 
     private void start(String host, int port) throws IOException {
-        System.out.println("Connection established.");
-
         Socket socket = new Socket(host, port);
+        BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        BufferedWriter out = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
 
-        BufferedReader socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        BufferedWriter socketOut = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-        BufferedReader consoleIn = new BufferedReader(new InputStreamReader(System.in));
+        new Thread(new KeyboardHandler(out, socket)).start();
+        String line;
+        while (( line = in.readLine()) != null) {
+            System.out.println(line);
+        }
+        socket.close();
+    }
 
-        String lineReceived;
-        String lineSent;
+    private class KeyboardHandler implements Runnable {
+        private BufferedWriter out;
+        private Socket socket;
+        private BufferedReader in;
 
-        while (true){
-            socketOut.write(consoleIn.read());
-            socketOut.newLine();
-            socketOut.flush();
+        public KeyboardHandler(BufferedWriter out, Socket socket) {
+            this.out = out;
+            this.socket = socket;
+            this.in = new BufferedReader(new InputStreamReader(System.in));
+        }
 
-            if ((lineReceived = socketIn.readLine()) != null){
-                System.out.println(lineReceived);
+        @Override
+        public void run() {
+
+            while (!socket.isClosed()) {
+                try {
+                    String line = in.readLine();
+
+                    out.write(line);
+                    out.newLine();
+                    out.flush();
+
+                    if (line.equals("/quit")) {
+                        socket.close();
+                        System.exit(0);
+                    }
+                } catch (IOException e) {
+                    System.out.println("Something went wrong with the server. Connection closing...");
+                    try {
+                        socket.close();
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                }
             }
         }
     }
