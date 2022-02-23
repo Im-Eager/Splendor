@@ -111,19 +111,7 @@ public class Player {
         return false;
     }
 
-
-
-    /*public List<Card> getPlayerHand() {
-
-        return playerHand;
+    private String win(){
+        return score >= 15 ? Messages.I_WIN_MOTHERFUCKERS : Messages.KEEP_PLAYING;
     }
-
-    public int getGems() {
-        return gems;
-    }
-
-    @Override
-    public Iterator iterator() {
-        return null;
-    }*/
 }
