@@ -1,7 +1,9 @@
 package academy.mindswap.server;
 
+import academy.mindswap.commands.Command;
 import academy.mindswap.game.Game;
 import academy.mindswap.game.Player;
+import academy.mindswap.utils.Messages;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -53,7 +55,28 @@ public class ClientConnectionHandler implements Runnable {
         return message.startsWith("/");
     }
 
+    private void dealWithCommand(String message) /*throws IOException */ {
+        if (isCommand(message)) {
+            String description = message.toUpperCase().split(" ")[0];
+            Command command = Command.getCommandFromDescription(description);
+
+            if (command == null) {
+                try {
+                    out.write(Messages.IMPOSSIBLE_MOVE);
+                    out.newLine();
+                    out.flush();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                return;
+            }
+
+            command.getHandler().execute(server, this); // CHECK IF SENDING VIA CORRECT SERVER
+        }
+    }
+
     public void send(String message) {
+        dealWithCommand(message);
         try {
             out.write(message);
             out.newLine();

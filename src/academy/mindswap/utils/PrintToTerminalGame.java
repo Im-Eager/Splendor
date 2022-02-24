@@ -2,7 +2,7 @@ package academy.mindswap.utils;
 
 public class PrintToTerminalGame {
 
-    public static void startScreen(){
+    public static String startScreen(){
         System.out.println(Messages.WELCOME_MESSAGE1);
         System.out.println(Messages.WELCOME_MESSAGE2);
         System.out.println(Messages.WELCOME_MESSAGE3);
@@ -16,6 +16,10 @@ public class PrintToTerminalGame {
         System.out.println(Messages.WELCOME_MESSAGE10);
         System.out.println(Messages.WELCOME_MESSAGE11);
         System.out.println(Messages.WELCOME_MESSAGE12);
+
+        return Messages.WELCOME_MESSAGE1 + Messages.WELCOME_MESSAGE2 + Messages.WELCOME_MESSAGE3 +Messages.WELCOME_MESSAGE4 +
+                Messages.WELCOME_MESSAGE5 + Messages.WELCOME_MESSAGE6 + Messages.WELCOME_MESSAGE7 + Messages.WELCOME_MESSAGE8 +
+                Messages.WELCOME_MESSAGE9+ Messages.WELCOME_MESSAGE10 + Messages.WELCOME_MESSAGE11 + Messages.WELCOME_MESSAGE12;
     }
 
 
