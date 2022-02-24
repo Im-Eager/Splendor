@@ -61,6 +61,7 @@ public class Server {
                 .forEach(handler -> handler.send(name + ": " + message));
     }
 
+
     public String listClients() {
         StringBuffer buffer = new StringBuffer();
         clients.forEach(client -> buffer.append(client.getName()).append("\n"));

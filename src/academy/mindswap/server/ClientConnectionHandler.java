@@ -55,7 +55,7 @@ public class ClientConnectionHandler implements Runnable {
         return message.startsWith("/");
     }
 
-    private void dealWithCommand(String message) /*throws IOException */ {
+    public void dealWithCommand(String message) /*throws IOException */ {
         if (isCommand(message)) {
             String description = message.toUpperCase().split(" ")[0];
             Command command = Command.getCommandFromDescription(description);
@@ -72,6 +72,9 @@ public class ClientConnectionHandler implements Runnable {
             }
 
             command.getHandler().execute(server, this); // CHECK IF SENDING VIA CORRECT SERVER
+            player.setPlaying(false);
+            clientSocket.notifyAll();
+
         }
     }
 

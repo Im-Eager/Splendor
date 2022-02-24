@@ -5,11 +5,12 @@ import academy.mindswap.utils.Messages;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.stream.IntStream;
 
 public class Player {
 
     private String name;
-    private LinkedList<Card> playerReservedCards;
+    private LinkedList<String> playerReservedCards; //temporarily assigned to string instead of card
     private int[] ownedMines;
     private int[] bank;
     private int score;
@@ -27,25 +28,27 @@ public class Player {
 
     }
 
-    public void reserveCard(Card card) {
-        this.hasPlayed = false;
+    public void reserveCard(String positionOfCard) {
+
         if( playerReservedCards.size() == 3){
             System.out.println(Messages.CANT_RESERVE);
             return;
         }
         this.bank[5] += 1;
-        playerReservedCards.add(card);
-        this.hasPlayed = true;
+        playerReservedCards.add(positionOfCard);
+        // remove card from table
+        // add another card
     }
 
 
-    public void grabGems(int[] grabbedGems) {
-        this.hasPlayed = false;
+    public void grabGems(String gems) {
+
         int[] temp = bank;
 
-        for (int i = 0; i < grabbedGems.length; i++) {
-            temp[i] += grabbedGems[i];
+        for (int i = 0; i < gems.length(); i++) {
+            temp[i] = gems.charAt(i);
         }
+
         int bankTotal = Arrays.stream(temp).reduce(0, Integer::sum);
 
         if (bankTotal > 10){
@@ -53,20 +56,22 @@ public class Player {
             return;
         }
         bank = temp;
-        this.hasPlayed = true;
     }
 
 
-    public void buyCard(Card card) {
-        this.hasPlayed = false;
-        if (canBuyWhite(card) && canBuyBlue(card) && canBuyGreen(card) && canBuyRed(card) && canBuyBlack(card)) {
-            this.score += card.getPoints();  //score increased directly on buy
-            this.hasPlayed = true;
-            return;
-        }
-
-        System.out.println(Messages.CANT_BUY);
-    }
+//    public void buyCard(String card) {
+//
+//        card.
+//
+//
+//        if (canBuyWhite(card) && canBuyBlue(card) && canBuyGreen(card) && canBuyRed(card) && canBuyBlack(card)) {
+//            this.score += card.getPoints();  //score increased directly on buy
+//            this.hasPlayed = true;
+//            return;
+//        }
+//
+//        System.out.println(Messages.CANT_BUY);
+//    }
 
 
     private boolean canBuyWhite(Card card) {
@@ -130,9 +135,6 @@ public class Player {
         return score;
     }
 
-    public LinkedList<Card> getPlayerReservedCards() {
-        return playerReservedCards;
-    }
 
     public int[] getOwnedMines() {
         return ownedMines;
@@ -140,5 +142,9 @@ public class Player {
 
     public int[] getBank() {
         return bank;
+    }
+
+    public String getName() {
+        return name;
     }
 }

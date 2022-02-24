@@ -3,6 +3,7 @@ package academy.mindswap.game;
 import academy.mindswap.PrintBoard;
 import academy.mindswap.cards.Card;
 import academy.mindswap.server.ClientConnectionHandler;
+import academy.mindswap.utils.Messages;
 import academy.mindswap.utils.PrintToTerminalGame;
 
 import java.util.*;
@@ -71,6 +72,7 @@ public class Game implements Runnable {
                 Card cardToGive = tiersCardGiver.get(i).get(j);
                 tiersCardGiver.get(i).remove(cardToGive);
                 this.table.put("p" + (i + 1) + (j + 1), cardToGive);
+
             }
         }
 
@@ -98,25 +100,72 @@ public class Game implements Runnable {
         notifyAll();
     }
 
+    public void verifyCommand(String command){
+        switch (command.charAt(1)) {
+            case 'B' -> players.stream()
+                    .findFirst().get()
+                    .getPlayer()
+                    .buyCard(command.substring(3));
+
+            case 'G' -> players.stream()
+                    .findFirst().get()
+                    .getPlayer()
+                    .grabGems(command.substring(3));
+
+            case 'R' -> players.stream()
+                    .findFirst().get()
+                    .getPlayer()
+                    .reserveCard(command.substring(3));
+        }
+
+    }
+
     @Override
     public void run() {
 
         ClientConnectionHandler playerPlaying = players.stream().findFirst().get();
 
         try {
+            players.forEach(p -> p.send(PrintToTerminalGame.startScreen()));
+            Thread.sleep(1500);
 
             while (!winner) {
                 this.command = null;
 
-                playerPlaying.getPlayer().setPlaying(true);
-                players.forEach(p -> p.send(PrintToTerminalGame.startScreen()));
-                Thread.sleep(1500);
+//                playerPlaying.getPlayer().setPlaying(true);
+
                 players.forEach(p -> p.send(printBoard.printBoard(players, table, bank)));
                 players.forEach(p -> p.send("COLOCAR IMPRESSÂO DA MÃO RESPECTIVA DE CADA JOGADOR"));
-                playerPlaying.send("It is your turn to play! \nWaiting for your command... \nType /help to receive a list of commands.");
+
+                playerPlaying.send("It is your turn to play! \n Waiting for your command... \n Type /help to receive a list of commands.");
+                ClientConnectionHandler finalPlayerPlaying = playerPlaying; //final variable to introduce lambda function.
+                players.forEach(p -> p.send("Playing: " + finalPlayerPlaying.getName()));
+
+
+                // change to broadcast
 
                 wait();
 
+                switch (command.charAt(1)) {
+                    case 'H' -> System.out.println(Messages.COMMAND_HELP);
+
+                    case 'B' -> playerPlaying
+                            .getPlayer()
+                            .buyCard(command.substring(3));
+
+                    case 'G' -> playerPlaying
+                            .getPlayer()
+                            .grabGems(command.substring(3));
+
+                    case 'R' -> playerPlaying
+                            .getPlayer()
+                            .reserveCard(command.substring(3));
+
+                    default -> System.out.println(Messages.IMPOSSIBLE_MOVE);
+                }
+
+
+                playerPlaying = players.stream().findFirst().stream().skip(1).findFirst().get();;
                 playerPlaying.send("Cheguei aqui2");
 
 
