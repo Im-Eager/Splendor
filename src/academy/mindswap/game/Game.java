@@ -1,16 +1,18 @@
 package academy.mindswap.game;
 
 import academy.mindswap.cards.Card;
-import academy.mindswap.server.Server;
+import academy.mindswap.server.ClientConnectionHandler;
 import academy.mindswap.utils.PrintToTerminalGame;
 
 import java.util.*;
 
 public class Game implements Runnable {
 
+    private String command;
+
     private int[] bank;
 
-    private final List<Server.ClientConnectionHandler> players;
+    private final List<ClientConnectionHandler> players;
 
     private HashMap<String, Card> table = new HashMap<>();
 
@@ -23,6 +25,7 @@ public class Game implements Runnable {
 
     public Game(List players, List<Card> deck) {
 
+        Collections.shuffle(players);
         Collections.shuffle(deck);
 
         this.deckTier1.addAll(deck.stream().filter(t -> t.getTier() == 1).toList());
@@ -32,13 +35,8 @@ public class Game implements Runnable {
 
         this.players = players;
 
-        players.forEach((p) -> p = new Player("Player"));
-
-        for (Card c: deck) {
-            c.getColor();
-        }
-
-        gameSetup();
+        this.players.forEach(p -> p.setGame(this));
+        this.players.forEach(p -> p.setPlayer(new Player(p.getName())));
 
         run();
     }
@@ -87,31 +85,67 @@ public class Game implements Runnable {
         this.bank = new int[]{numOfChips, numOfChips, numOfChips, numOfChips, numOfChips, 5};
     }
 
+    public void setCommand(String command) {
+        players.stream().findFirst().get().send("Cheu");
+        this.command = command;
+        notifyAll();
+    }
 
     @Override
     public void run() {
-//        gameSetup();
+
+        gameSetup();
+
+        ClientConnectionHandler playerPlaying = players.stream().findFirst().get();
+
+        try {
+
+            while (!winner) {
+                this.command = null;
+
+                playerPlaying.getPlayer().setPlaying(true);
+                players.forEach(p -> p.send("COLOCAR IMPRESSÂO DO BOARD"));
+                players.forEach(p -> p.send("COLOCAR IMPRESSÂO DA MÃO RESPECTIVA DE CADA JOGADOR"));
+                playerPlaying.send("It is your turn to play! \nWaiting for your command... \nType /help to receive a list of commands.");
+
+                wait();
+
+                playerPlaying.send("Cheguei aqui2");
 
 
 
-//
-//        try {
-//
-//            while (!winner) {
-//
-//                Player playerPlaying = player;
-//
-//                socket = players.get(playerPlaying);
-//
-//                command = br.readLine();
-//
-//                bw.write(command);
-//
-//            }
-//
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
-
 }
+
+/*
+//    public int checkPlayerCards(List<Card> playerHand) {
+//
+//        return player.getPlayerHand()
+//                .stream().mapToInt(Card::getPoints)
+//                .sum();
+//    }
+//
+//    public int checkPlayerTokens() {
+//        return player.getGems();
+//
+//    }
+//
+//    public void checkPlayerPoints() {
+//        if (player.getPoints >= 15) {
+//            player.win();
+//            if (player.getPoints < 15) {
+//                Messages.LOSE_MESSAGE();
+//            }
+//        }
+//    }
+//
+//    public void updatePlayerScore() {
+//
+//    }
+
+}*/

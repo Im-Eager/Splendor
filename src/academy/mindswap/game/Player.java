@@ -15,7 +15,7 @@ public class Player {
     private int score;
     private boolean playerCanBuy;
     private boolean hasPlayed;
-
+    private boolean isPlaying;
 
     public Player(String name) {
         this.name = name;
@@ -117,4 +117,13 @@ public class Player {
     private String win(){
         return score >= 15 ? Messages.I_WIN_MOTHERFUCKERS : Messages.KEEP_PLAYING;
     }
+
+    public void setPlaying(Boolean isPlaying){
+        this.isPlaying = isPlaying;
+    }
+
+    public boolean isPlaying(){
+        return isPlaying;
+    }
+
 }
