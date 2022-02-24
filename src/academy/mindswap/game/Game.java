@@ -48,15 +48,14 @@ public class Game implements Runnable {
 
     private void gameSetup() {
 
-
-
-        PrintToTerminalGame.startScreen();
-        /*try {
-            Thread.sleep(6000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }*/
-        PrintToTerminalGame.screenSetup();
+//
+//        PrintToTerminalGame.startScreen();
+//        try {
+//            Thread.sleep(6000);
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//        PrintToTerminalGame.screenSetup();
 
 
         fillBank();
@@ -110,6 +109,8 @@ public class Game implements Runnable {
                 this.command = null;
 
                 playerPlaying.getPlayer().setPlaying(true);
+                players.forEach(p -> p.send(PrintToTerminalGame.startScreen()));
+                Thread.sleep(1500);
                 players.forEach(p -> p.send(printBoard.printBoard(players, table, bank)));
                 players.forEach(p -> p.send("COLOCAR IMPRESSÂO DA MÃO RESPECTIVA DE CADA JOGADOR"));
                 playerPlaying.send("It is your turn to play! \nWaiting for your command... \nType /help to receive a list of commands.");
@@ -117,7 +118,6 @@ public class Game implements Runnable {
                 wait();
 
                 playerPlaying.send("Cheguei aqui2");
-
 
 
             }
@@ -128,6 +128,7 @@ public class Game implements Runnable {
     }
 
 }
+
 
 /*
 //    public int checkPlayerCards(List<Card> playerHand) {

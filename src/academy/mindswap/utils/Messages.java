@@ -27,18 +27,18 @@ public class Messages {
     public static final String I_WIN_MOTHERFUCKERS = ANSI_YELLOW + "Fuck you all! I won! " + ANSI_RESET;
     public static final String KEEP_PLAYING = ANSI_YELLOW + "Nex player turn " + ANSI_RESET;
 
-    public static final String WELCOME_MESSAGE1 = "  /$$$$$$            /$$                           /$$                   ";
-    public static final String WELCOME_MESSAGE2 = "  /$$$$$$            /$$                           /$$                   ";
-    public static final String WELCOME_MESSAGE3 = " /$$__  $$          | $$                          | $$                    ";
-    public static final String WELCOME_MESSAGE4 = "| $$  \\__/  /$$$$$$ | $$  /$$$$$$  /$$$$$$$   /$$$$$$$  /$$$$$$   /$$$$$$ ";
-    public static final String WELCOME_MESSAGE5 = "|  $$$$$$  /$$__  $$| $$ /$$__  $$| $$__  $$ /$$__  $$ /$$__  $$ /$$__  $$";
-    public static final String WELCOME_MESSAGE6 = " \\____  $$| $$  \\ $$| $$| $$$$$$$$| $$  \\ $$| $$  | $$| $$  \\ $$| $$  \\__/";
-    public static final String WELCOME_MESSAGE7 = " /$$  \\ $$| $$  | $$| $$| $$_____/| $$  | $$| $$  | $$| $$  | $$| $$      ";
-    public static final String WELCOME_MESSAGE8 = "|  $$$$$$/| $$$$$$$/| $$|  $$$$$$$| $$  | $$|  $$$$$$$|  $$$$$$/| $$      ";
-    public static final String WELCOME_MESSAGE9 = " \\______/ | $$____/ |__/ \\_______/|__/  |__/ \\_______/ \\______/ |__/      ";
-    public static final String WELCOME_MESSAGE10 = "          | $$                                                            ";
-    public static final String WELCOME_MESSAGE11 = "          | $$                                                            ";
-    public static final String WELCOME_MESSAGE12 = "          |__/                                                            ";
+    public static final String WELCOME_MESSAGE1 = "  /$$$$$$            /$$                           /$$                   "+ "\n";
+    public static final String WELCOME_MESSAGE2 = "  /$$$$$$            /$$                           /$$                   "+ "\n";
+    public static final String WELCOME_MESSAGE3 = " /$$__  $$          | $$                          | $$                    "+ "\n";
+    public static final String WELCOME_MESSAGE4 = "| $$  \\__/  /$$$$$$ | $$  /$$$$$$  /$$$$$$$   /$$$$$$$  /$$$$$$   /$$$$$$ "+ "\n";
+    public static final String WELCOME_MESSAGE5 = "|  $$$$$$  /$$__  $$| $$ /$$__  $$| $$__  $$ /$$__  $$ /$$__  $$ /$$__  $$"+ "\n";
+    public static final String WELCOME_MESSAGE6 = " \\____  $$| $$  \\ $$| $$| $$$$$$$$| $$  \\ $$| $$  | $$| $$  \\ $$| $$  \\__/"+ "\n";
+    public static final String WELCOME_MESSAGE7 = " /$$  \\ $$| $$  | $$| $$| $$_____/| $$  | $$| $$  | $$| $$  | $$| $$      "+ "\n";
+    public static final String WELCOME_MESSAGE8 = "|  $$$$$$/| $$$$$$$/| $$|  $$$$$$$| $$  | $$|  $$$$$$$|  $$$$$$/| $$      "+ "\n";
+    public static final String WELCOME_MESSAGE9 = " \\______/ | $$____/ |__/ \\_______/|__/  |__/ \\_______/ \\______/ |__/      "+ "\n";
+    public static final String WELCOME_MESSAGE10 = "          | $$                                                            "+ "\n";
+    public static final String WELCOME_MESSAGE11 = "          | $$                                                            "+ "\n";
+    public static final String WELCOME_MESSAGE12 = "          |__/                                                            "+ "\n";
 
 
     public static final String SCREEN_SETUP1 = "                                        _____                        ____                      _ ";
