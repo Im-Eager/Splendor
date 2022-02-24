@@ -126,4 +126,19 @@ public class Player {
         return isPlaying;
     }
 
+    public int getScore() {
+        return score;
+    }
+
+    public LinkedList<Card> getPlayerReservedCards() {
+        return playerReservedCards;
+    }
+
+    public int[] getOwnedMines() {
+        return ownedMines;
+    }
+
+    public int[] getBank() {
+        return bank;
+    }
 }

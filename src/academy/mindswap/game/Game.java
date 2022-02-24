@@ -1,5 +1,6 @@
 package academy.mindswap.game;
 
+import academy.mindswap.PrintBoard;
 import academy.mindswap.cards.Card;
 import academy.mindswap.server.ClientConnectionHandler;
 import academy.mindswap.utils.PrintToTerminalGame;
@@ -23,7 +24,10 @@ public class Game implements Runnable {
     private LinkedList<Card> deckTier2 = new LinkedList<Card>();
     private LinkedList<Card> deckTier1 = new LinkedList<Card>();
 
+    PrintBoard printBoard = new PrintBoard();
+
     public Game(List players, List<Card> deck) {
+
 
         Collections.shuffle(players);
         Collections.shuffle(deck);
@@ -38,16 +42,20 @@ public class Game implements Runnable {
         this.players.forEach(p -> p.setGame(this));
         this.players.forEach(p -> p.setPlayer(new Player(p.getName())));
 
+        gameSetup();
         run();
     }
 
     private void gameSetup() {
+
+
+
         PrintToTerminalGame.startScreen();
-        try {
+        /*try {
             Thread.sleep(6000);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
         PrintToTerminalGame.screenSetup();
 
 
@@ -94,8 +102,6 @@ public class Game implements Runnable {
     @Override
     public void run() {
 
-        gameSetup();
-
         ClientConnectionHandler playerPlaying = players.stream().findFirst().get();
 
         try {
@@ -104,7 +110,7 @@ public class Game implements Runnable {
                 this.command = null;
 
                 playerPlaying.getPlayer().setPlaying(true);
-                players.forEach(p -> p.send("COLOCAR IMPRESSÂO DO BOARD"));
+                players.forEach(p -> p.send(printBoard.printBoard(players, table, bank)));
                 players.forEach(p -> p.send("COLOCAR IMPRESSÂO DA MÃO RESPECTIVA DE CADA JOGADOR"));
                 playerPlaying.send("It is your turn to play! \nWaiting for your command... \nType /help to receive a list of commands.");
 
@@ -120,6 +126,7 @@ public class Game implements Runnable {
             e.printStackTrace();
         }
     }
+
 }
 
 /*

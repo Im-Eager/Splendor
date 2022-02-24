@@ -72,6 +72,10 @@ public class ClientConnectionHandler implements Runnable {
         }
     }
 
+    public Game getGame() {
+        return game;
+    }
+
     public String getName() {
         return name;
     }
