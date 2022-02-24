@@ -38,8 +38,6 @@ public class PrintBoard{
         int[] pb4 = player1.getBank();
 
 
-        //Position of bank index[0] = (W)hite, index[1] = Bl(U)e, index[2] = (G)reen, index[3] = (R)ed, index[4] = Blac(K), index[5] = Go(L)d
-
         int[] card11 = new int[]{board.get("p11").getCostWhite(), board.get("p11").getCostBlue(), board.get("p11").getCostGreen(), board.get("p11").getCostRed(), board.get("p11").getCostBlack()};
         int[] card12 = new int[]{board.get("p12").getCostWhite(), board.get("p12").getCostBlue(), board.get("p12").getCostGreen(), board.get("p12").getCostRed(), board.get("p12").getCostBlack()};
         int[] card13 = new int[]{board.get("p13").getCostWhite(), board.get("p13").getCostBlue(), board.get("p13").getCostGreen(), board.get("p13").getCostRed(), board.get("p13").getCostBlack()};
