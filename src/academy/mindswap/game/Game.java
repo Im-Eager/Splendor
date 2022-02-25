@@ -96,7 +96,7 @@ public class Game implements Runnable {
         this.command = command;
     }
 
-    /*public void verifyCommand(String command){
+    public void verifyCommand(String command){
         switch (command.charAt(1)) {
             case 'B' -> players.stream()
                     .findFirst().get()
@@ -114,7 +114,7 @@ public class Game implements Runnable {
                     .reserveCard(command.substring(3));
         }
 
-    }*/
+    }
 
     @Override
     public void run() {

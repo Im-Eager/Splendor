@@ -62,6 +62,7 @@ public class PrintBoard{
                 board.get("p21").getColor(), board.get("p22").getColor(), board.get("p23").getColor(), board.get("p24").getColor(),
                 board.get("p31").getColor(), board.get("p32").getColor(), board.get("p33").getColor(), board.get("p34").getColor()};
 
+
         for (int i = 0; i < cardMine.length; i++) {
             if(cardMine[i].equals("Red")){
                 cardMine[i] = "\u001B[31mMINE";
