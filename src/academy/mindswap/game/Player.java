@@ -31,17 +31,17 @@ public class Player {
 
     }
 
-/*    public void reserveCard(String positionOfCard) {
-
-        if( playerReservedCards.size() == 3){
-            System.out.println(Messages.CANT_RESERVE);
-            return;
-        }
-        this.bank[5] += 1;
-        playerReservedCards.add(positionOfCard);
+//   public void reserveCard(String positionOfCard) {
+//
+//        if( playerReservedCards.size() == 3){
+//            System.out.println(Messages.CANT_RESERVE);
+//            return;
+//        }
+//        this.bank[5] += 1;
+//        playerReservedCards.add();
         // remove card from table
         // add another card
-    }*/
+//    }
 
 
     public void grabGems(String gems) {
@@ -150,7 +150,17 @@ public class Player {
         return name;
     }
 
-    public List<Mine> getOwnedCards(){
+    public List<Mine> getReservedCards(){
         return playerReservedCards;
     }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setBank(int[] bank) {
+        this.bank = bank;
+    }
+
+
 }

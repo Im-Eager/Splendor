@@ -19,7 +19,7 @@ public abstract class Card {
     }
 
     public int getPoints() {
-        return points;
+        return this.points;
     }
 
     public int getTier() {

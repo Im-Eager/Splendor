@@ -35,10 +35,10 @@ public class Game implements Runnable {
         Collections.shuffle(players);
         Collections.shuffle(deck);
 
-        this.deckTier1.addAll(deck.stream().filter(t -> t.getTier() == 1).map(p -> (Mine)p).toList());
-        this.deckTier2.addAll(deck.stream().filter(t -> t.getTier() == 2).map(p -> (Mine)p).toList());
-        this.deckTier3.addAll(deck.stream().filter(t -> t.getTier() == 3).map(p -> (Mine)p).toList());
-        this.deckTier4.addAll(deck.stream().filter(t -> t.getTier() == 4).map(p -> (Lord)p).toList());
+        this.deckTier1.addAll(deck.stream().filter(t -> t.getTier() == 1).map(p -> (Mine) p).toList());
+        this.deckTier2.addAll(deck.stream().filter(t -> t.getTier() == 2).map(p -> (Mine) p).toList());
+        this.deckTier3.addAll(deck.stream().filter(t -> t.getTier() == 3).map(p -> (Mine) p).toList());
+        this.deckTier4.addAll(deck.stream().filter(t -> t.getTier() == 4).map(p -> (Lord) p).toList());
 
         this.players = players;
 
@@ -49,6 +49,7 @@ public class Game implements Runnable {
 
         run();
     }
+
 
     private void gameSetup() {
 /*
@@ -61,7 +62,9 @@ public class Game implements Runnable {
         PrintToTerminalGame.screenSetup();
 */
 
+
         fillBank();
+
 
         ArrayList<LinkedList<Mine>> tiersCardGiver = new ArrayList<>();
 
@@ -99,7 +102,38 @@ public class Game implements Runnable {
         this.command = command;
     }
 
-    /*public void verifyCommand(String command){
+
+    public Mine reserveCard(String message) {
+        return board.get(message);
+
+    }
+
+    public void buyCard(String message, ClientConnectionHandler player) {
+
+        int[] temp = player.getPlayer().getBank();
+
+        for (int i = 0; i < board.get(message).getCost().length; i++) {
+            temp[i] -= board.get(message).getCost()[i];
+
+            if (board.get(message).getCost()[0] >= player.getPlayer().getBank()[0] &&
+                    board.get(message).getCost()[1] <= player.getPlayer().getBank()[1]
+                    || board.get(message).getCost()[1] <= player.getPlayer().getBank()[1] + player.getPlayer().getBank()[5] &&
+                    board.get(message).getCost()[2] <= player.getPlayer().getBank()[2]
+                    || board.get(message).getCost()[2] <= player.getPlayer().getBank()[2] + player.getPlayer().getBank()[5] &&
+                    board.get(message).getCost()[3] <= player.getPlayer().getBank()[4]
+                    || board.get(message).getCost()[3] <= player.getPlayer().getBank()[3] + player.getPlayer().getBank()[5] &&
+                    board.get(message).getCost()[4] <= player.getPlayer().getBank()[4]
+                    || board.get(message).getCost()[4] <= player.getPlayer().getBank()[4] + player.getPlayer().getBank()[5]) {
+
+                player.getPlayer().setScore(player.getPlayer().getScore() + board.get(message).getPoints());
+                player.getPlayer().setBank(temp);
+
+            }
+        }
+    }
+
+
+    /* public void verifyCommand(String command){
         switch (command.charAt(1)) {
             case 'B' -> players.stream()
                     .findFirst().get()
@@ -123,6 +157,7 @@ public class Game implements Runnable {
     public void run() {
 
         ClientConnectionHandler playerPlaying = players.stream().findFirst().get();
+//        ClientConnectionHandler nextPlayer = players.stream().iterator().next();
 
         try {
 
@@ -132,15 +167,15 @@ public class Game implements Runnable {
 
                 players.forEach(p -> p.send("LINHA 4 DO BOARD"));
                 players.forEach(p -> p.send(printBoard.printBoard(players, board, boardLords, bank)));
-                players.forEach(p -> p.send(printBoard.printBoardReservedCards(p.getPlayer().getOwnedCards())));
+                players.forEach(p -> p.send(printBoard.printBoardReservedCards(p.getPlayer().getReservedCards())));
 
                 players.forEach(p -> p.send("COLOCAR IMPRESSÂO DA MÃO RESPECTIVA DE CADA JOGADOR"));
                 players.forEach(p -> p.send("Playing: " + playerPlaying.getName()));
                 playerPlaying.send("It is your turn to play!Type /help to receive a list of commands. \nWaiting for your command... ");
 
-                while (true){
+                while (true) {
                     Thread.sleep(500);
-                    if(playerPlaying.getHasPlayerGivenCommand()){
+                    if (playerPlaying.getHasPlayerGivenCommand()) {
                         break;
                     }
                 }
@@ -148,21 +183,36 @@ public class Game implements Runnable {
                 playerPlaying.send("Cheguei");
 
                 switch (command.charAt(1)) {
-                    case 'H' -> playerPlaying.send(Messages.COMMAND_HELP);
+                    case 'H' -> {
+                        playerPlaying.send(Messages.COMMAND_HELP);
+                        continue;
+                    }
 
-/*                    case 'B' -> playerPlaying
-                            .getPlayer()
-                            .buyCard(command.substring(3));*/
+                    case 'B' -> {
+                        buyCard(command.substring(3), playerPlaying);
+                        // PLAYER PLAYING = NEXT
+                        continue;
+                    }
+                    case 'G' -> {
+                        playerPlaying
+                                .getPlayer()
+                                .grabGems(command.substring(3));
+                        // PLAYER PLAYING = NEXT
 
-                    case 'G' -> playerPlaying
-                            .getPlayer()
-                            .grabGems(command.substring(3));
+                        continue;
+                    }
+                    case 'R' -> {
+                        playerPlaying
+                                .getPlayer()
+                                .getReservedCards()
+                                .add(reserveCard(command.substring(3)));
+                        // PLAYER PLAYING = NEXT
 
-                    //case 'R' -> playerPlaying
-                    //        .getPlayer()
-                    //        .reserveCard(command.substring(3));
+                        continue;
+                    }
 
-                    default -> System.out.println(Messages.IMPOSSIBLE_MOVE);
+
+                    default -> playerPlaying.send(Messages.IMPOSSIBLE_MOVE);
                 }
             }
         } catch (InterruptedException e) {
