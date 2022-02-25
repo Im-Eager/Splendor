@@ -1,8 +1,6 @@
 package academy.mindswap.game;
-
 import academy.mindswap.cards.Card;
 import academy.mindswap.utils.Messages;
-
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -82,48 +80,33 @@ public class Player {
 
 
     private boolean canBuyWhite( Card card) {
-        if (card.getCostWhite() <= ownedMines[0]
+        return card.getCostWhite() <= ownedMines[0]
                 || card.getCostWhite() <= ownedMines[0] + bank[0]
-                || card.getCostWhite() <= ownedMines[0] + bank[0] + bank[5]) {
-            return true;
-        }
-        return false;
+                || card.getCostWhite() <= ownedMines[0] + bank[0] + bank[5];
     }
 
     private boolean canBuyBlue(Card card) {
-        if (card.getCostBlue() <= ownedMines[1]
+        return card.getCostBlue() <= ownedMines[1]
                 || card.getCostBlue() <= ownedMines[1] + bank[1]
-                || card.getCostBlue() <= ownedMines[1] + bank[1] + bank[5]) {
-            return true;
-        }
-        return false;
+                || card.getCostBlue() <= ownedMines[1] + bank[1] + bank[5];
     }
 
     private boolean canBuyGreen(Card card) {
-        if (card.getCostGreen() <= ownedMines[2]
+        return card.getCostGreen() <= ownedMines[2]
                 || card.getCostGreen() <= ownedMines[2] + bank[2]
-                || card.getCostGreen() <= ownedMines[2] + bank[2] + bank[5]) {
-            return true;
-        }
-        return false;
+                || card.getCostGreen() <= ownedMines[2] + bank[2] + bank[5];
     }
 
     private boolean canBuyRed(Card card) {
-        if (card.getCostRed() <= ownedMines[3]
+        return card.getCostRed() <= ownedMines[3]
                 || card.getCostRed() <= ownedMines[3] + bank[3]
-                || card.getCostRed() <= ownedMines[3] + bank[3] + bank[5]) {
-            return true;
-        }
-        return false;
+                || card.getCostRed() <= ownedMines[3] + bank[3] + bank[5];
     }
 
     private boolean canBuyBlack(Card card) {
-        if (card.getCostBlack() <= ownedMines[4]
+        return card.getCostBlack() <= ownedMines[4]
                 || card.getCostBlack() <= ownedMines[4] + bank[4]
-                || card.getCostBlack() <= ownedMines[4] + bank[4] + bank[5]) {
-            return true;
-        }
-        return false;
+                || card.getCostBlack() <= ownedMines[4] + bank[4] + bank[5];
     }
 
     private String win(){

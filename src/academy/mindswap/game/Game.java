@@ -96,26 +96,6 @@ public class Game implements Runnable {
         this.command = command;
     }
 
-    public void verifyCommand(String command){
-        switch (command.charAt(1)) {
-            case 'B' -> players.stream()
-                    .findFirst().get()
-                    .getPlayer()
-                    .buyCard(command.substring(3));
-
-            case 'G' -> players.stream()
-                    .findFirst().get()
-                    .getPlayer()
-                    .grabGems(command.substring(3));
-
-            case 'R' -> players.stream()
-                    .findFirst().get()
-                    .getPlayer()
-                    .reserveCard(command.substring(3));
-        }
-
-    }
-
     @Override
     public void run() {
 

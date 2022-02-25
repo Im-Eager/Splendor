@@ -7,7 +7,7 @@ public abstract class Card {
     protected int costRed;
     protected int costBlack;
     protected int points;
-    protected int tier; //levels High 3, Medium 2, Low 1
+    protected int tier; //levels Lord 4, High 3, Medium 2, Low 1
     protected String color;
 
     public Card(int costWhite, int costBlue, int costGreen, int costRed, int costBlack, int points, int tier, String color){
