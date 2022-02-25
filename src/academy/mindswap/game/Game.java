@@ -12,13 +12,15 @@ public class Game implements Runnable {
 
     private String command;
 
+    private Game game;
+
     private int[] bank;
 
     private final List<ClientConnectionHandler> players;
 
-    private HashMap<String, Card> table = new HashMap<>();
-
     private boolean winner;
+
+    private HashMap<String, Card> table = new HashMap<>();
 
     private LinkedList<Card> deckTier4 = new LinkedList<Card>();
     private LinkedList<Card> deckTier3 = new LinkedList<Card>();
@@ -28,7 +30,6 @@ public class Game implements Runnable {
     PrintBoard printBoard = new PrintBoard();
 
     public Game(List players, List<Card> deck) {
-
 
         Collections.shuffle(players);
         Collections.shuffle(deck);
@@ -44,20 +45,18 @@ public class Game implements Runnable {
         this.players.forEach(p -> p.setPlayer(new Player(p.getName())));
 
         gameSetup();
+
         run();
     }
 
     private void gameSetup() {
-
-//
-//        PrintToTerminalGame.startScreen();
-//        try {
-//            Thread.sleep(6000);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
-//        PrintToTerminalGame.screenSetup();
-
+        PrintToTerminalGame.startScreen();
+        try {
+            Thread.sleep(600);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        PrintToTerminalGame.screenSetup();
 
         fillBank();
 
@@ -72,7 +71,6 @@ public class Game implements Runnable {
                 Card cardToGive = tiersCardGiver.get(i).get(j);
                 tiersCardGiver.get(i).remove(cardToGive);
                 this.table.put("p" + (i + 1) + (j + 1), cardToGive);
-
             }
         }
 
@@ -95,12 +93,10 @@ public class Game implements Runnable {
     }
 
     public void setCommand(String command) {
-        players.stream().findFirst().get().send("Cheu");
         this.command = command;
-        notifyAll();
     }
 
-    public void verifyCommand(String command){
+    /*public void verifyCommand(String command){
         switch (command.charAt(1)) {
             case 'B' -> players.stream()
                     .findFirst().get()
@@ -118,16 +114,16 @@ public class Game implements Runnable {
                     .reserveCard(command.substring(3));
         }
 
-    }
+    }*/
 
     @Override
     public void run() {
 
+        gameSetup();
+
         ClientConnectionHandler playerPlaying = players.stream().findFirst().get();
 
         try {
-            players.forEach(p -> p.send(PrintToTerminalGame.startScreen()));
-            Thread.sleep(1500);
 
             while (!winner) {
                 this.command = null;
@@ -144,6 +140,15 @@ public class Game implements Runnable {
 
                 // change to broadcast
 
+            synchronized (this) {
+                try {
+                    while (this.command == null) {
+                        wait();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
                 wait();
 
                 switch (command.charAt(1)) {
@@ -177,32 +182,3 @@ public class Game implements Runnable {
     }
 
 }
-
-
-/*
-//    public int checkPlayerCards(List<Card> playerHand) {
-//
-//        return player.getPlayerHand()
-//                .stream().mapToInt(Card::getPoints)
-//                .sum();
-//    }
-//
-//    public int checkPlayerTokens() {
-//        return player.getGems();
-//
-//    }
-//
-//    public void checkPlayerPoints() {
-//        if (player.getPoints >= 15) {
-//            player.win();
-//            if (player.getPoints < 15) {
-//                Messages.LOSE_MESSAGE();
-//            }
-//        }
-//    }
-//
-//    public void updatePlayerScore() {
-//
-//    }
-
-}*/

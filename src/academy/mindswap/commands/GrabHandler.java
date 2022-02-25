@@ -5,9 +5,9 @@ import academy.mindswap.server.Server;
 
 public class GrabHandler implements CommandHandler{
 
-    @Override
+    /*@Override
     public void execute(Server server, ClientConnectionHandler clientConnectionHandler) {
 //        clientConnectionHandler.getPlayer().grabGems();
 
-    }
+    }*/
 }

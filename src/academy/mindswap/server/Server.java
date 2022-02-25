@@ -16,7 +16,9 @@ public class Server {
 
     private ServerSocket serverSocket;
     private ExecutorService service;
+    private ExecutorService games;
     private final List<ClientConnectionHandler> clients;
+
 
     public Server() throws IOException {
         clients = new CopyOnWriteArrayList<>();
@@ -25,13 +27,14 @@ public class Server {
 
     public void start(int port) throws IOException {
         serverSocket = new ServerSocket(port);
+        games = Executors.newCachedThreadPool();
         service = Executors.newCachedThreadPool();
         int numberOfConnections = 0;
 
         while (true) {
-            acceptConnection(numberOfConnections);
             ++numberOfConnections;
-            if (clients.size() == 3) {
+            acceptConnection(numberOfConnections);
+            if (numberOfConnections == 4) {
                 launchGame(clients);
             }
         }
@@ -47,7 +50,9 @@ public class Server {
 
     public void launchGame(List<ClientConnectionHandler> playersList) {
         System.out.println("Game starting.");
-        Thread gameRunner = new Thread(new Game(playersList, new OriginalDeck().getDeck()));
+        Game game = new Game(playersList, new OriginalDeck().getDeck());
+        Thread thread = new Thread(game);
+        games.submit(thread);
     }
 
     void addClient(ClientConnectionHandler clientConnectionHandler) {
@@ -78,5 +83,6 @@ public class Server {
                 .filter(clientConnectionHandler -> clientConnectionHandler.getName().equalsIgnoreCase(name))
                 .findFirst();
     }
+
 }
 

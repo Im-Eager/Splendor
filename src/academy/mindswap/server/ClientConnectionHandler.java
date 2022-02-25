@@ -13,8 +13,8 @@ import java.util.Scanner;
 
 public class ClientConnectionHandler implements Runnable {
 
-    private String name;
-    private Socket clientSocket;
+    private final String name;
+    private final Socket clientSocket;
     private BufferedWriter out;
     private String message;
     private Player player;
@@ -121,4 +121,5 @@ public class ClientConnectionHandler implements Runnable {
     public void setPlayer(Player player){
         this.player = player;
     }
+
 }
