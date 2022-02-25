@@ -1,4 +1,5 @@
 package academy.mindswap.commands;
+/*
 
 public enum Command {
     BUY("BUY", new BuyHandler()),
@@ -26,3 +27,4 @@ public enum Command {
         return handler;
     }
 }
+*/

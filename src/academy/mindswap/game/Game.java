@@ -1,10 +1,10 @@
 package academy.mindswap.game;
 
-import academy.mindswap.PrintBoard;
 import academy.mindswap.cards.Card;
+import academy.mindswap.cards.Lord;
+import academy.mindswap.cards.Mine;
 import academy.mindswap.server.ClientConnectionHandler;
 import academy.mindswap.utils.Messages;
-import academy.mindswap.utils.PrintToTerminalGame;
 
 import java.util.*;
 
@@ -20,12 +20,13 @@ public class Game implements Runnable {
 
     private boolean winner;
 
-    private HashMap<String, Card> table = new HashMap<>();
+    private HashMap<String, Mine> board = new HashMap<>();
+    private HashMap<String, Lord> boardLords = new HashMap<>();
 
-    private LinkedList<Card> deckTier4 = new LinkedList<Card>();
-    private LinkedList<Card> deckTier3 = new LinkedList<Card>();
-    private LinkedList<Card> deckTier2 = new LinkedList<Card>();
-    private LinkedList<Card> deckTier1 = new LinkedList<Card>();
+    private LinkedList<Lord> deckTier4 = new LinkedList<Lord>();
+    private LinkedList<Mine> deckTier3 = new LinkedList<Mine>();
+    private LinkedList<Mine> deckTier2 = new LinkedList<Mine>();
+    private LinkedList<Mine> deckTier1 = new LinkedList<Mine>();
 
     PrintBoard printBoard = new PrintBoard();
 
@@ -34,10 +35,10 @@ public class Game implements Runnable {
         Collections.shuffle(players);
         Collections.shuffle(deck);
 
-        this.deckTier1.addAll(deck.stream().filter(t -> t.getTier() == 1).toList());
-        this.deckTier2.addAll(deck.stream().filter(t -> t.getTier() == 2).toList());
-        this.deckTier3.addAll(deck.stream().filter(t -> t.getTier() == 3).toList());
-        this.deckTier4.addAll(deck.stream().filter(t -> t.getTier() == 4).toList());
+        this.deckTier1.addAll(deck.stream().filter(t -> t.getTier() == 1).map(p -> (Mine)p).toList());
+        this.deckTier2.addAll(deck.stream().filter(t -> t.getTier() == 2).map(p -> (Mine)p).toList());
+        this.deckTier3.addAll(deck.stream().filter(t -> t.getTier() == 3).map(p -> (Mine)p).toList());
+        this.deckTier4.addAll(deck.stream().filter(t -> t.getTier() == 4).map(p -> (Lord)p).toList());
 
         this.players = players;
 
@@ -50,6 +51,7 @@ public class Game implements Runnable {
     }
 
     private void gameSetup() {
+/*
         PrintToTerminalGame.startScreen();
         try {
             Thread.sleep(600);
@@ -57,10 +59,11 @@ public class Game implements Runnable {
             e.printStackTrace();
         }
         PrintToTerminalGame.screenSetup();
+*/
 
         fillBank();
 
-        ArrayList<LinkedList<Card>> tiersCardGiver = new ArrayList<>();
+        ArrayList<LinkedList<Mine>> tiersCardGiver = new ArrayList<>();
 
         tiersCardGiver.add(deckTier1);
         tiersCardGiver.add(deckTier2);
@@ -68,16 +71,16 @@ public class Game implements Runnable {
 
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < 4; j++) {
-                Card cardToGive = tiersCardGiver.get(i).get(j);
+                Mine cardToGive = tiersCardGiver.get(i).get(j);
                 tiersCardGiver.get(i).remove(cardToGive);
-                this.table.put("p" + (i + 1) + (j + 1), cardToGive);
+                this.board.put("p" + (i + 1) + (j + 1), cardToGive);
             }
         }
 
         for (int i = 0; i < this.players.size(); i++) {
-            Card cardToGive = this.deckTier4.get(i);
+            Lord cardToGive = this.deckTier4.get(i);
             this.deckTier4.remove(cardToGive);
-            this.table.put("p4" + (i + 1), cardToGive);
+            this.boardLords.put("p4" + (i + 1), cardToGive);
         }
     }
 
@@ -96,69 +99,74 @@ public class Game implements Runnable {
         this.command = command;
     }
 
+    /*public void verifyCommand(String command){
+        switch (command.charAt(1)) {
+            case 'B' -> players.stream()
+                    .findFirst().get()
+                    .getPlayer()
+                    .buyCard(command.substring(3));
+
+            case 'G' -> players.stream()
+                    .findFirst().get()
+                    .getPlayer()
+                    .grabGems(command.substring(3));
+
+            case 'R' -> players.stream()
+                    .findFirst().get()
+                    .getPlayer()
+                    .reserveCard(command.substring(3));
+        }
+
+    }*/
+
     @Override
     public void run() {
-
-        gameSetup();
 
         ClientConnectionHandler playerPlaying = players.stream().findFirst().get();
 
         try {
 
             while (!winner) {
-                this.command = null;
+                playerPlaying.setHasPlayerGivenCommand(false);
+                playerPlaying.getPlayer().setPlaying(true);
 
-//                playerPlaying.getPlayer().setPlaying(true);
+                players.forEach(p -> p.send("LINHA 4 DO BOARD"));
+                players.forEach(p -> p.send(printBoard.printBoard(players, board, boardLords, bank)));
+                players.forEach(p -> p.send(printBoard.printBoardReservedCards(p.getPlayer().getOwnedCards())));
 
-                players.forEach(p -> p.send(printBoard.printBoard(players, table, bank)));
                 players.forEach(p -> p.send("COLOCAR IMPRESSÂO DA MÃO RESPECTIVA DE CADA JOGADOR"));
+                players.forEach(p -> p.send("Playing: " + playerPlaying.getName()));
+                playerPlaying.send("It is your turn to play!Type /help to receive a list of commands. \nWaiting for your command... ");
 
-                playerPlaying.send("It is your turn to play! \n Waiting for your command... \n Type /help to receive a list of commands.");
-                ClientConnectionHandler finalPlayerPlaying = playerPlaying; //final variable to introduce lambda function.
-                players.forEach(p -> p.send("Playing: " + finalPlayerPlaying.getName()));
-
-
-                // change to broadcast
-
-            synchronized (this) {
-                try {
-                    while (this.command == null) {
-                        wait();
+                while (true){
+                    Thread.sleep(500);
+                    if(playerPlaying.getHasPlayerGivenCommand()){
+                        break;
                     }
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
                 }
-            }
-                wait();
+
+                playerPlaying.send("Cheguei");
 
                 switch (command.charAt(1)) {
-                    case 'H' -> System.out.println(Messages.COMMAND_HELP);
+                    case 'H' -> playerPlaying.send(Messages.COMMAND_HELP);
 
-                    case 'B' -> playerPlaying
+/*                    case 'B' -> playerPlaying
                             .getPlayer()
-                            .buyCard(command.substring(3));
+                            .buyCard(command.substring(3));*/
 
                     case 'G' -> playerPlaying
                             .getPlayer()
                             .grabGems(command.substring(3));
 
-                    case 'R' -> playerPlaying
-                            .getPlayer()
-                            .reserveCard(command.substring(3));
+                    //case 'R' -> playerPlaying
+                    //        .getPlayer()
+                    //        .reserveCard(command.substring(3));
 
                     default -> System.out.println(Messages.IMPOSSIBLE_MOVE);
                 }
-
-
-                playerPlaying = players.stream().findFirst().stream().skip(1).findFirst().get();;
-                playerPlaying.send("Cheguei aqui2");
-
-
             }
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
     }
-
 }

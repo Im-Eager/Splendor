@@ -1,54 +1,21 @@
 package academy.mindswap.cards;
 
 public abstract class Card {
-    protected int costWhite;
-    protected int costBlue;
-    protected int costGreen;
-    protected int costRed;
-    protected int costBlack;
     protected int points;
     protected int tier; //levels Lord 4, High 3, Medium 2, Low 1
     protected String color;
+    protected int[] cost;
 
-    public Card(int costWhite, int costBlue, int costGreen, int costRed, int costBlack, int points, int tier, String color){
-        this.costWhite = costWhite;
-        this.costBlue = costBlue;
-        this.costGreen = costGreen;
-        this.costRed = costRed;
-        this.costBlack = costBlack;
-        this.points = points;
-        this.tier = tier;
-        this.color = color;
-    }
+    //Position of bank index[0] = (W)hite, index[1] = Bl(U)e, index[2] = (G)reen, index[3] = (R)ed, index[4] = Blac(K), index[5] = Go(L)d
 
     public Card(int costWhite, int costBlue, int costGreen, int costRed, int costBlack, int points, int tier) {
-        this.costWhite = costWhite;
-        this.costBlue = costBlue;
-        this.costGreen = costGreen;
-        this.costRed = costRed;
-        this.costBlack = costBlack;
+        this.cost = new int[]{costWhite, costBlue, costGreen, costRed, costBlack};
         this.points = points;
         this.tier = tier;
     }
 
-    public int getCostWhite() {
-        return costWhite;
-    }
-
-    public int getCostBlue() {
-        return costBlue;
-    }
-
-    public int getCostGreen() {
-        return costGreen;
-    }
-
-    public int getCostRed() {
-        return costRed;
-    }
-
-    public int getCostBlack() {
-        return costBlack;
+    public int[] getCost(){
+        return this.cost;
     }
 
     public int getPoints() {
@@ -57,9 +24,5 @@ public abstract class Card {
 
     public int getTier() {
         return tier;
-    }
-
-    public String getColor() {
-        return color;
     }
 }

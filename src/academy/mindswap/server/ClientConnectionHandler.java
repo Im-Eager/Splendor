@@ -1,9 +1,7 @@
 package academy.mindswap.server;
 
-import academy.mindswap.commands.Command;
 import academy.mindswap.game.Game;
 import academy.mindswap.game.Player;
-import academy.mindswap.utils.Messages;
 
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -20,12 +18,14 @@ public class ClientConnectionHandler implements Runnable {
     private Player player;
     private Server server;
     private Game game;
+    private boolean hasPlayerGivenCommand;
 
     public ClientConnectionHandler(Socket clientSocket, String name, Server server) throws IOException {
         this.server = server;
         this.clientSocket = clientSocket;
         this.name = name;
         this.out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()));
+        this.hasPlayerGivenCommand = true;
     }
 
     @Override
@@ -36,12 +36,14 @@ public class ClientConnectionHandler implements Runnable {
             Scanner in = new Scanner(clientSocket.getInputStream());
             while (in.hasNext()) {
                 message = in.nextLine();
+                //hasPlayerGivenCommand = true;
                 if (message.equals("")) {
                     continue;
                 }
                 server.broadcast(name, message);
                 if (this.player.isPlaying() && isCommand(message)){
                     game.setCommand(message);
+                    this.hasPlayerGivenCommand = true;
                 }
             }
         } catch (IOException e) {
@@ -55,7 +57,7 @@ public class ClientConnectionHandler implements Runnable {
         return message.startsWith("/");
     }
 
-    public void dealWithCommand(String message) /*throws IOException */ {
+/*    public void dealWithCommand(String message) *//*throws IOException *//* {
         if (isCommand(message)) {
             String description = message.toUpperCase().split(" ")[0];
             Command command = Command.getCommandFromDescription(description);
@@ -74,12 +76,11 @@ public class ClientConnectionHandler implements Runnable {
             command.getHandler().execute(server, this); // CHECK IF SENDING VIA CORRECT SERVER
             player.setPlaying(false);
             clientSocket.notifyAll();
-
         }
-    }
+    }*/
 
     public void send(String message) {
-        dealWithCommand(message);
+        //dealWithCommand(message);
         try {
             out.write(message);
             out.newLine();
@@ -98,8 +99,12 @@ public class ClientConnectionHandler implements Runnable {
         }
     }
 
-    public Game getGame() {
-        return game;
+    public void setHasPlayerGivenCommand(boolean setBoolean){
+        this.hasPlayerGivenCommand = false;
+    }
+
+    public boolean getHasPlayerGivenCommand(){
+        return this.hasPlayerGivenCommand;
     }
 
     public String getName() {
