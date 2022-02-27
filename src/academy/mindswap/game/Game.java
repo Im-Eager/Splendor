@@ -1,9 +1,9 @@
 /**
- * @(#)Game.java        1.0 28/02/2022
- *
+ * @(#)Game.java 1.0 28/02/2022
+ * <p>
  * Copyright© MindSwap Academy - Diogo Noronha, Luis Faria, Ricardo Paiva, Tiago Miranda
  * All rights reserved.
- *
+ * <p>
  * This software was produced to become our first group project.
  */
 
@@ -12,6 +12,7 @@ package academy.mindswap.game;
 import academy.mindswap.cards.Card;
 import academy.mindswap.cards.Lord;
 import academy.mindswap.cards.Mine;
+import academy.mindswap.game.decks.OriginalDeck;
 import academy.mindswap.server.ClientConnectionHandler;
 import academy.mindswap.utils.Messages;
 
@@ -34,6 +35,7 @@ public class Game implements Runnable {
     private LinkedList<Mine> deckTier1 = new LinkedList<Mine>();
 
     PrintBoard printBoard = new PrintBoard();
+
 
     public Game(List players, List<Card> deck) {
 
@@ -66,7 +68,6 @@ public class Game implements Runnable {
         }
         PrintToTerminalGame.screenSetup();
 */
-
 
         fillBank();
 
@@ -108,7 +109,7 @@ public class Game implements Runnable {
     }
 
 
-    public boolean bankHasChips(ClientConnectionHandler player) {
+    public boolean bankHasChips() {
         for (int i = 0; i < bank.length; i++) {
             if (bank[i] > 1) {
                 return true;
@@ -150,90 +151,86 @@ public class Game implements Runnable {
 
     public void grabGems(String message, ClientConnectionHandler player) {
 
-        if(bankHasChips(player)){
+        if (bankHasChips()) {
 
-        int[] temp = player.getPlayer().getBank();
+            int[] temp = player.getPlayer().getBank();
 
-        for (int i = 0; i < temp.length; i++) {
-            temp[i] = message.substring(3).charAt(i);
-        }
-        if (Arrays.stream(temp).reduce(0, Integer::sum) > 10) {
-            System.out.println(Messages.MORE_THAN_10);
-            return;
-        }
-
-        player.getPlayer().setBank(temp);
-        }
-
-        player.send(Messages.TOKEN_STACK_LOW);
-    }
-
-
-    @Override
-    public void run() {
-
-        ClientConnectionHandler playerPlaying = players.stream().findFirst().get();
-        try {
-
-            while (!winner) {
-                playerPlaying.setHasPlayerGivenCommand(false);
-                playerPlaying.getPlayer().setPlaying(true);
-
-                players.forEach(p -> p.send("LINHA 4 DO BOARD"));
-                players.forEach(p -> p.send(printBoard.printBoard(players, board, boardLords, bank)));
-                players.forEach(p -> p.send(printBoard.printBoardReservedCards(p.getPlayer().getReservedCards())));
-
-                players.forEach(p -> p.send("COLOCAR IMPRESSÃO DA MÃO RESPECTIVA DE CADA JOGADOR"));
-                players.forEach(p -> p.send("Playing: " + playerPlaying.getName()));
-                playerPlaying.send("It is your turn to play!Type /help to receive a list of commands. \nWaiting for your command... ");
-
-                while (true) {
-                    Thread.sleep(500);
-                    if (playerPlaying.getHasPlayerGivenCommand()) {
-                        break;
-                    }
-                }
-
-                switch (command.charAt(1)) {
-                    case 'H' -> {
-                        playerPlaying.send(Messages.COMMAND_HELP);
-                        break;
-                    }
-
-                    case 'B' -> {
-                        buyCard(command.substring(3), playerPlaying);
-                        // PLAYER PLAYING = NEXT
-                        return;
-
-                    }
-                    case 'G' -> {
-                        game.grabGems(command, playerPlaying);
-                        // PLAYER PLAYING = NEXT
-                        return;
-
-                    }
-                    case 'R' -> {
-                        playerPlaying
-                                .getPlayer()
-                                .getReservedCards()
-                                .add(reserveCard(command.substring(3)));
-                        playerPlaying
-                                .getPlayer()
-                                .increaseGold();
-                        return;
-
-                    }
-
-
-                    default -> {
-                        playerPlaying.send(Messages.IMPOSSIBLE_MOVE);
-                        break;
-                    }
-
-                }
+            for (int i = 0; i < temp.length; i++) {
+                temp[i] = message.substring(3).charAt(i);
             }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+            if (Arrays.stream(temp).reduce(0, Integer::sum) > 10) {
+                System.out.println(Messages.MORE_THAN_10);
+            } else {
+                player.getPlayer().setBank(temp);
+
+            }
+            player.send(Messages.TOKEN_STACK_LOW);
         }
     }
-}
+
+    public boolean checkWinner(ClientConnectionHandler player){
+       return player.getPlayer().getScore() >= 15;
+    }
+
+        @Override
+        public void run () {
+
+            ClientConnectionHandler playerPlaying = players.stream().findFirst().get();
+            try {
+
+                while (!winner) {
+                    playerPlaying.setHasPlayerGivenCommand(false);
+                    playerPlaying.getPlayer().setPlaying(true);
+
+                    players.forEach(p -> p.send("LINHA 4 DO BOARD"));
+                    players.forEach(p -> p.send(printBoard.printBoard(players, board, boardLords, bank)));
+                    players.forEach(p -> p.send(printBoard.printBoardReservedCards(p.getPlayer().getReservedCards())));
+
+                    players.forEach(p -> p.send("COLOCAR IMPRESSÃO DA MÃO RESPECTIVA DE CADA JOGADOR"));
+                    players.forEach(p -> p.send("Playing: " + playerPlaying.getName()));
+                    playerPlaying.send("It is your turn to play!Type /help to receive a list of commands. \nWaiting for your command... ");
+
+                    while (true) {
+                        Thread.sleep(500);
+                        if (playerPlaying.getHasPlayerGivenCommand()) {
+                            break;
+                        }
+                    }
+                    switch (command.charAt(1)) {
+                        case 'H' -> {
+                            playerPlaying.send(Messages.COMMAND_HELP);
+                        }
+                        case 'B' -> {
+                            buyCard(command.substring(3), playerPlaying);
+                            // PLAYER PLAYING = NEXT
+                        }
+                        case 'G' -> {
+                            this.game.grabGems(command, playerPlaying);
+                            // PLAYER PLAYING = NEXT
+
+                        }
+                        case 'R' -> {
+                            playerPlaying
+                                    .getPlayer()
+                                    .getReservedCards()
+                                    .add(reserveCard(command.substring(3)));
+                            playerPlaying
+                                    .getPlayer()
+                                    .increaseGold();
+
+                        }
+                        default -> {
+                            playerPlaying.send(Messages.IMPOSSIBLE_MOVE);
+                        }
+                    }
+                   if( checkWinner(playerPlaying)) {
+                       playerPlaying.send(Messages.I_WIN_MOTHERFUCKERS);
+                   }
+
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }
+    }

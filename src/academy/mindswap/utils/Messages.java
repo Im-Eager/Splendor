@@ -33,7 +33,7 @@ public class Messages {
     public static final String MORE_THAN_10 = ANSI_RED + "You can only have 10 Tokens  " + ANSI_RESET;
     public static final String TOKEN_STACK_LOW = ANSI_RED + "Token stack is low." + ANSI_RESET;
     public static final String GOLD_TOKEN_AWARDED = ANSI_YELLOW + "You just received a GOLDEN TOKEN " + ANSI_RESET;
-    public static final String I_WIN_MOTHERFUCKERS = ANSI_YELLOW + "Fuck you all! I won! " + ANSI_RESET;
+    public static final String I_WIN_MOTHERFUCKERS = ANSI_YELLOW + "F*** you all! I won! " + ANSI_RESET;
     public static final String KEEP_PLAYING = ANSI_YELLOW + "Nex player turn " + ANSI_RESET;
     public static final String COMMAND_HELP = "Type '/B##' to Buy  - '/G#####' to grab Gems  -  '/R##' to reserve card \n" +
             "The # sign represents the position you wish to interact with.";
