@@ -96,6 +96,6 @@ The tile obtained is placed face-up in front of the player in question.
 
 
 End of the Game
-When a player reaches >15 prestige points, complete the current round so that each player has played the same number of turns.
+When a player reaches >= 15 prestige points, complete the current round so that each player has played the same number of turns.
 The player who then has the highest number of prestige points is declared the winner (don't forget to count your nobles).
 
