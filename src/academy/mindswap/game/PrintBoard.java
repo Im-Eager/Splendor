@@ -14,127 +14,304 @@ import academy.mindswap.cards.Mine;
 import academy.mindswap.server.ClientConnectionHandler;
 
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 
 public class PrintBoard {
 
-    private List<ClientConnectionHandler> players;
-    private HashMap<String, Mine> board;
-    private HashMap<String, Lord> boardLords;
-    private int[] bank;
-
     public PrintBoard() {
     }
 
-
-    public String colorCodeCreator(String color) {
+    private String colorCodeCreator(String color) {
         String code;
         if (color.equals("Red")) {
-            code = "\u001B[31mMINE";
+            code = "\u001B[31m";
         } else if (color.equals("Blue")) {
-            code = "\u001B[34mMINE";
+            code = "\u001B[34m";
         } else if (color.equals("White")) {
-            code = "\u001B[37mMINE";
+            code = "\u001B[37m";
         } else if (color.equals("Black")) {
-            code = "\u001B[30mMINE";
+            code = "\u001B[30m";
         } else {
-            code = "\u001B[32mMINE";
+            code = "\u001B[32m";
         }
         return code;
     }
 
-    public String printBoardReservedCards(List<Mine> reservedCards) {
+    public String[] boxMakerLord(String key, Lord lord) {
+        String[] box = new String[4];
+        box[0] = " -----------" + key + "----------- ";
+        box[1] = "|Points: " + lord.getPoints() + "                |";
+        box[2] = "|Cost: " + "\u001B[37m" + lord.getCost()[0] + "W " + "\u001B[34m" + lord.getCost()[1] + "U " +
+                "\u001B[32m" + lord.getCost()[2] + "G " + "\u001B[31m" + lord.getCost()[3] + "R " +
+                "\u001B[30m" + lord.getCost()[4] + "K " + "\u001B[0m" + "    |";
+        box[3] = " ------------------------- ";
 
-        int numberOfCards = reservedCards.size();
-
-        String toReturn1 = "You have no cards reserved.";
-        String toReturn2 = "";
-        String toReturn3 = "";
-
-        switch (numberOfCards) {
-            case 1 -> {
-                int[] card1 = reservedCards.get(0).getCost();
-                toReturn1 = colorCodeCreator(reservedCards.get(0).getColor()) + "\u001B[37m\tP00 \u001B[37m" + card1[0] + "W \u001B[34m" + card1[1] + "B \u001B[32m" + card1[2] + "G \u001B[31m" + card1[3] + "R \u001B[30m" + card1[4] + "K\t\u001B[37m |";
-            }
-            case 2 -> {
-                int[] card1 = reservedCards.get(1).getCost();
-                toReturn1 = colorCodeCreator(reservedCards.get(1).getColor()) + "\u001B[37m\tP00 \u001B[37m" + card1[0] + "W \u001B[34m" + card1[1] + "B \u001B[32m" + card1[2] + "G \u001B[31m" + card1[3] + "R \u001B[30m" + card1[4] + "K\t\u001B[37m |";
-            }
-            case 3 -> {
-                int[] card1 = reservedCards.get(2).getCost();
-                toReturn1 = colorCodeCreator(reservedCards.get(2).getColor()) + "\u001B[37m\tP00 \u001B[37m" + card1[0] + "W \u001B[34m" + card1[1] + "B \u001B[32m" + card1[2] + "G \u001B[31m" + card1[3] + "R \u001B[30m" + card1[4] + "K\t\u001B[37m |";
-            }
-        }
-
-        return toReturn1 + toReturn2 + toReturn3;
+        return box;
     }
 
-
-    public String printBoard(List<ClientConnectionHandler> playersList, HashMap<String, Mine> board, HashMap<String, Lord> boardLords, int[] bank) {
-        players = playersList;
-
-        Player player1 = players.get(0).getPlayer();
-        Player player2 = players.get(1).getPlayer();
-        Player player3 = players.get(2).getPlayer();
-        Player player4 = players.get(3).getPlayer();
-
-        this.board = board;
-        this.boardLords = boardLords;
-        this.bank = bank;
-        int p1Pts = player1.getScore();
-        int p2Pts = player2.getScore();
-        int p3Pts = player3.getScore();
-        int p4Pts = player4.getScore();
-
-        int[] cp1 = player1.getOwnedMines();
-        int[] cp2 = player2.getOwnedMines();
-        int[] cp3 = player3.getOwnedMines();
-        int[] cp4 = player4.getOwnedMines();
-
-        int[] pb1 = player1.getBank();
-        int[] pb2 = player1.getBank();
-        int[] pb3 = player1.getBank();
-        int[] pb4 = player1.getBank();
-
-        String[] cardMine = new String[]{board.get("p11").getColor(), board.get("p12").getColor(), board.get("p13").getColor(), board.get("p14").getColor(),
-                board.get("p21").getColor(), board.get("p22").getColor(), board.get("p23").getColor(), board.get("p24").getColor(),
-                board.get("p31").getColor(), board.get("p32").getColor(), board.get("p33").getColor(), board.get("p34").getColor()};
-
-        for (int i = 0; i < cardMine.length; i++) {
-            if (cardMine[i].equals("Red")) {
-                cardMine[i] = "\u001B[31mMINE";
-            } else if (cardMine[i].equals("Blue")) {
-                cardMine[i] = "\u001B[34mMINE";
-            } else if (cardMine[i].equals("White")) {
-                cardMine[i] = "\u001B[37mMINE";
-            } else if (cardMine[i].equals("Black")) {
-                cardMine[i] = "\u001B[30mMINE";
-            } else {
-                cardMine[i] = "\u001B[32mMINE";
-            }
+    public String[][] makeBoardLord(HashMap<String, Lord> board) {
+        int size = board.size();
+        String[][] boxArray = new String[size][4];
+        for (int i = 0; i < size; i++) {
+            String key = board.keySet().stream().sorted().toList().get(i);
+            Lord lord = board.get(key);
+            boxArray[i][0] = boxMakerLord(key, lord)[0];
+            boxArray[i][1] = boxMakerLord(key, lord)[1];
+            boxArray[i][2] = boxMakerLord(key, lord)[2];
+            boxArray[i][3] = boxMakerLord(key, lord)[3];
         }
-
-        //Position of bank index[0] = (W)hite, index[1] = Bl(U)e, index[2] = (G)reen, index[3] = (R)ed, index[4] = Blac(K), index[5] = Go(L)d
-
-        return ("\u001B[37m----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n" +
-                "\u001B[37mTABLE\n\u001B[37m----------------------------------------------------------------------------------------------------------------------------------------------------------------------" +
-                "\n\u001B[37mBANK \t\t\t\t\t\t\t\t\u001B[33mGo(L)d  -> " + bank[5] + "\u001B[37m\t\u001B[30mBlac(K) -> " + bank[4] + "\u001B[37m\t\u001B[34mBl(U)e  -> " + bank[1] + "\u001B[37m\t(W)hite -> " + bank[0] + "\u001B[32m\t(G)reen -> " + bank[3] + "\u001B[31m\t(R)ed   -> " + bank[4] + "\u001B[37m\n" +
-                "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n" +
-                "TIER 4\n\t\tPOS41\t\u001B[33mLORD\u001B[37m\tP00 \u001B[37m" + boardLords.get("p41").getCost()[0] + "W \u001B[34m" + boardLords.get("p41").getCost()[1] + "B \u001B[32m" + boardLords.get("p41").getCost()[2] + "G \u001B[31m" + boardLords.get("p41").getCost()[3] + "R \u001B[30m" + boardLords.get("p41").getCost()[4] + "K\t\u001B[37m |\t POS42\t\u001B[33mLORD\u001B[37m\tP00 \u001B[37m" + boardLords.get("p42").getCost()[0] + "W \u001B[34m" + boardLords.get("p42").getCost()[1] + "B \u001B[32m" + boardLords.get("p42").getCost()[2] + "G \u001B[31m" + boardLords.get("p42").getCost()[3] + "R \u001B[30m" + boardLords.get("p42").getCost()[4] + "K\t\u001B[37m |\t POS43\t\u001B[33mLORD\u001B[37m\tP00 \u001B[37m" + boardLords.get("p43").getCost()[0] + "W \u001B[34m" + boardLords.get("p43").getCost()[1] + "B \u001B[32m" + boardLords.get("p43").getCost()[2] + "G \u001B[31m" + boardLords.get("p43").getCost()[3] + "R \u001B[30m" + boardLords.get("p43").getCost()[4] + "K\t\u001B[37m |\t POS44\t\u001B[33mLORD\u001B[37m\tP00 \u001B[37m" + boardLords.get("p44").getCost()[0] + "W \u001B[34m" + boardLords.get("p44").getCost()[1] + "B \u001B[32m" + boardLords.get("p44").getCost()[2] + "G \u001B[31m" + boardLords.get("p44").getCost()[3] + "R \u001B[30m" + boardLords.get("p44").getCost()[4] + "K\t\u001B[37m |\t\n" +
-                "TIER 3\n\t\tPOS31\t" + cardMine[8] + "\u001B[37m\tP00 \u001B[37m" + board.get("p31").getCost()[0] + "W \u001B[34m" + board.get("p31").getCost()[1] + "B \u001B[32m" + board.get("p31").getCost()[2] + "G \u001B[31m" + board.get("p31").getCost()[3] + "R \u001B[30m" + board.get("p31").getCost()[4] + "K\t\u001B[37m |\t POS32\t" + cardMine[9] + "\u001B[37m\tP00 \u001B[37m" + board.get("p32").getCost()[0] + "W \u001B[34m" + board.get("p32").getCost()[1] + "B \u001B[32m" + board.get("p32").getCost()[2] + "G \u001B[31m" + board.get("p32").getCost()[3] + "R \u001B[30m" + board.get("p32").getCost()[4] + "K\t\u001B[37m |\t POS43\t" + cardMine[10] + "\u001B[37m\tP00 \u001B[37m" + board.get("p33").getCost()[0] + "W \u001B[34m" + board.get("p33").getCost()[1] + "B \u001B[32m" + board.get("p33").getCost()[2] + "G \u001B[31m" + board.get("p33").getCost()[3] + "R \u001B[30m" + board.get("p33").getCost()[4] + "K\t\u001B[37m |\t POS44\t" + cardMine[11] + "\u001B[37m\tP00 \u001B[37m" + board.get("p34").getCost()[0] + "W \u001B[34m" + board.get("p34").getCost()[1] + "B \u001B[32m" + board.get("p34").getCost()[2] + "G \u001B[31m" + board.get("p34").getCost()[3] + "R \u001B[30m" + board.get("p34").getCost()[4] + "K\t\u001B[37m |\t\n" +
-                "TIER 2\n\t\tPOS21\t" + cardMine[4] + "\u001B[37m\tP00 \u001B[37m" + board.get("p21").getCost()[0] + "W \u001B[34m" + board.get("p21").getCost()[1] + "B \u001B[32m" + board.get("p21").getCost()[2] + "G \u001B[31m" + board.get("p21").getCost()[3] + "R \u001B[30m" + board.get("p21").getCost()[4] + "K\t\u001B[37m |\t POS22\t" + cardMine[5] + "\u001B[37m\tP00 \u001B[37m" + board.get("p22").getCost()[0] + "W \u001B[34m" + board.get("p22").getCost()[1] + "B \u001B[32m" + board.get("p22").getCost()[2] + "G \u001B[31m" + board.get("p22").getCost()[3] + "R \u001B[30m" + board.get("p22").getCost()[4] + "K\t\u001B[37m |\t POS43\t" + cardMine[6] + "\u001B[37m\tP00 \u001B[37m" + board.get("p23").getCost()[0] + "W \u001B[34m" + board.get("p23").getCost()[1] + "B \u001B[32m" + board.get("p23").getCost()[2] + "G \u001B[31m" + board.get("p23").getCost()[3] + "R \u001B[30m" + board.get("p23").getCost()[4] + "K\t\u001B[37m |\t POS44\t" + cardMine[7] + "\u001B[37m\tP00 \u001B[37m" + board.get("p24").getCost()[0] + "W \u001B[34m" + board.get("p24").getCost()[1] + "B \u001B[32m" + board.get("p24").getCost()[2] + "G \u001B[31m" + board.get("p24").getCost()[3] + "R \u001B[30m" + board.get("p24").getCost()[4] + "K\t\u001B[37m |\t\n" +
-                "TIER 1\n\t\tPOS11\t" + cardMine[0] + "\u001B[37m\tP00 \u001B[37m" + board.get("p11").getCost()[0] + "W \u001B[34m" + board.get("p11").getCost()[1] + "B \u001B[32m" + board.get("p11").getCost()[2] + "G \u001B[31m" + board.get("p11").getCost()[3] + "R \u001B[30m" + board.get("p11").getCost()[4] + "K\t\u001B[37m |\t POS12\t" + cardMine[1] + "\u001B[37m\tP00 \u001B[37m" + board.get("p12").getCost()[0] + "W \u001B[34m" + board.get("p12").getCost()[1] + "B \u001B[32m" + board.get("p12").getCost()[2] + "G \u001B[31m" + board.get("p12").getCost()[3] + "R \u001B[30m" + board.get("p12").getCost()[4] + "K\t\u001B[37m |\t POS13\t" + cardMine[2] + "\u001B[37m\tP00 \u001B[37m" + board.get("p13").getCost()[0] + "W \u001B[34m" + board.get("p13").getCost()[1] + "B \u001B[32m" + board.get("p13").getCost()[2] + "G \u001B[31m" + board.get("p13").getCost()[3] + "R \u001B[30m" + board.get("p13").getCost()[4] + "K\t\u001B[37m |\t POS14\t" + cardMine[3] + "\u001B[37m\tP00 \u001B[37m" + board.get("p14").getCost()[0] + "W \u001B[34m" + board.get("p14").getCost()[1] + "B \u001B[32m" + board.get("p14").getCost()[2] + "G \u001B[31m" + board.get("p14").getCost()[3] + "R \u001B[30m" + board.get("p14").getCost()[4] + "K\t\u001B[37m |\t\n" +
-                "----------------------------------------------------------------------------------------------------------------------------------------------------------------------\n" +
-                "\t\t\t\tPLAYER 1 HAND\t\t\t     |\t\t\t\tPLAYER 2 HAND\t\t\t |\t\t\t\tPLAYER 3 HAND\t\t\t |\t\t\t\tPLAYER 4 HAND\t\t\t |\n" +
-                "\t\t\t\t  Points: " + p1Pts + "\t\t\t\t     |\t\t\t\t  Points: " + p2Pts + "\t\t\t     |\t\t\t\t  Points: " + p3Pts + "\t\t\t     |\t\t\t\t  Points: " + p4Pts + "\t\t\t     |\n" +
-                "\t\t\t\t\u001B[37m" + cp1[0] + "W \u001B[34m" + cp1[1] + "B \u001B[32m" + cp1[2] + "G \u001B[31m" + cp1[3] + "R \u001B[30m" + cp1[4] + "K\t\u001B[37m\t\t\t |\t\t\t\t\u001B[37m" + cp2[0] + "W \u001B[34m" + cp2[1] + "B \u001B[32m" + cp2[2] + "G \u001B[31m" + cp2[3] + "R \u001B[30m" + cp2[4] + "K\t\u001B[37m\t\t |\t\t\t\t\u001B[37m" + cp3[0] + "W \u001B[34m" + cp3[1] + "B \u001B[32m" + cp3[2] + "G \u001B[31m" + cp3[3] + "R \u001B[30m" + cp3[4] + "K\t\u001B[37m\t\t |\t\t\t\t\u001B[37m" + cp4[0] + "W \u001B[34m" + cp4[1] + "B \u001B[32m" + cp4[2] + "G \u001B[31m" + cp4[3] + "R \u001B[30m" + cp4[4] + "K\t\u001B[37m\t\t |\n" +
-                "\t\t\t\t\u001B[37m" + pb1[0] + "W \u001B[34m" + pb1[1] + "B \u001B[32m" + pb1[2] + "G \u001B[31m" + pb1[3] + "R \u001B[30m" + pb1[4] + "K\t\u001B[37m\t\t\t |\t\t\t\t\u001B[37m" + pb2[0] + "W \u001B[34m" + pb2[1] + "B \u001B[32m" + pb2[2] + "G \u001B[31m" + pb2[3] + "R \u001B[30m" + pb2[4] + "K\t\u001B[37m\t\t |\t\t\t\t\u001B[37m" + pb3[0] + "W \u001B[34m" + pb3[1] + "B \u001B[32m" + pb3[2] + "G \u001B[31m" + pb3[3] + "R \u001B[30m" + pb3[4] + "K\t\u001B[37m\t\t |\t\t\t\t\u001B[37m" + pb4[0] + "W \u001B[34m" + pb4[1] + "B \u001B[32m" + pb4[2] + "G \u001B[31m" + pb4[3] + "R \u001B[30m" + pb4[4] + "K\t\u001B[37m\t\t |\n" +
-                "----------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-
+        return boxArray;
     }
 
-//    public String[] boxMaker (HashMap<String, Mine> board){
-//        String[] box;
-//        return box;
-//    }
+    public String printBoardLord(HashMap<String, Lord> board) {
+        String header = "*._______________________________________________.* LORDS *.______________________________________________.*" + "\n";
+        String boardToPrint;
+        String[][] bx = makeBoardLord(board);
+        String firstLine = "";
+        String secondLine = "";
+        String thirdLine = "";
+        String fourthLine = "";
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append(bx[i][0]);
+            firstLine = sb.toString();
+        }
+        sb = new StringBuffer();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append(bx[i][1]);
+            secondLine = sb.toString();
+        }
+        sb = new StringBuffer();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append(bx[i][2]);
+            thirdLine = sb.toString();
+        }
+        sb = new StringBuffer();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append(bx[i][3]);
+            fourthLine = sb.toString();
+        }
+        boardToPrint =
+                firstLine + "\n" + secondLine + "\n" + thirdLine + "\n" + fourthLine;
+
+        return header + boardToPrint;
+    }
+
+    public String[][] makeBoard(HashMap<String, Mine> board) {
+        String[][] boxArray = new String[board.size()][4];
+        for (int i = 0; i < board.size(); i++) {
+            String key = board.keySet().stream().sorted().toList().get(i);
+            Mine mine = board.get(key);
+            boxArray[i][0] = boxMaker(key, mine)[0];
+            boxArray[i][1] = boxMaker(key, mine)[1];
+            boxArray[i][2] = boxMaker(key, mine)[2];
+            boxArray[i][3] = boxMaker(key, mine)[3];
+        }
+        return boxArray;
+    }
+
+    public String[] boxMaker(String key, Mine mine) {
+        String color = colorCodeCreator(mine.getColor());
+        String[] box = new String[4];
+        box[0] = color + " -----------" + key + "----------- " + "\u001B[0m";
+        box[1] = color + "|Points: " + mine.getPoints() + "                |" + "\u001B[0m";
+        box[2] = color + "|Cost: " +
+                "\u001B[37m" + mine.getCost()[0] + "W " +
+                "\u001B[34m" + mine.getCost()[1] + "U " +
+                "\u001B[32m" + mine.getCost()[2] + "G " +
+                "\u001B[31m" + mine.getCost()[3] + "R " +
+                "\u001B[30m" + mine.getCost()[4] + "K " +
+                color + "    |" + "\u001B[0m";
+        box[3] = color + " ------------------------- " + "\u001B[0m";
+        return box;
+    }
+
+    public String printBoard(HashMap<String, Mine> board) {
+        String[][] bx = makeBoard(board);
+        String boardToPrint =
+                "*._______________________________________________.* MINES *.______________________________________________.*" + "\n" +
+                        bx[8][0] + bx[9][0] + bx[10][0] + bx[11][0] + "\n" +
+                        bx[8][1] + bx[9][1] + bx[10][1] + bx[11][1] + "\n" +
+                        bx[8][2] + bx[9][2] + bx[10][2] + bx[11][2] + "\n" +
+                        bx[8][3] + bx[9][3] + bx[10][3] + bx[11][3] + "\n" +
+
+                        bx[4][0] + bx[5][0] + bx[6][0] + bx[7][0] + "\n" +
+                        bx[4][1] + bx[5][1] + bx[6][1] + bx[7][1] + "\n" +
+                        bx[4][2] + bx[5][2] + bx[6][2] + bx[7][2] + "\n" +
+                        bx[4][3] + bx[5][3] + bx[6][3] + bx[7][3] + "\n" +
+
+                        bx[0][0] + bx[1][0] + bx[2][0] + bx[3][0] + "\n" +
+                        bx[0][1] + bx[1][1] + bx[2][1] + bx[3][1] + "\n" +
+                        bx[0][2] + bx[1][2] + bx[2][2] + bx[3][2] + "\n" +
+                        bx[0][3] + bx[1][3] + bx[2][3] + bx[3][3];
+
+        return boardToPrint;
+    }
+
+    public String printBank(int[] bank) {
+        String bankPrint =
+                "*._____________________________________________.* GAME BANK *.____________________________________________.*" + "\n" +
+                        "                          " +
+                        "\u001B[37m (W)hite:" + bank[0] +
+                        "\u001B[34m bl(U)e:" + bank[1] +
+                        "\u001B[32m (G)reen:" + bank[2] +
+                        "\u001B[31m (R)ed:" + bank[3] +
+                        "\u001B[30m blac(K):" + bank[4] +
+                        "\u001B[33m go(L)d:" + bank[5] +
+                        "\u001B[0m";
+        return bankPrint;
+    }
+
+    public String[] boxMakerPlayers(ClientConnectionHandler players) {
+        String[] box = new String[6];
+        box[0] = " ------------------------- ";
+        box[1] = "|" + players.getPlayer().getName() + "                  |";
+
+        box[2] = "|Points: " + players.getPlayer().getScore() + "                |";
+        box[3] = "|Coin: " +
+                "\u001B[37m" + players.getPlayer().getBank()[0] + "W " +
+                "\u001B[34m" + players.getPlayer().getBank()[1] + "U " +
+                "\u001B[32m" + players.getPlayer().getBank()[2] + "G " +
+                "\u001B[31m" + players.getPlayer().getBank()[3] + "R " +
+                "\u001B[30m" + players.getPlayer().getBank()[4] + "K " +
+                "\u001B[33m" + players.getPlayer().getBank()[5] + "L " +
+                "\u001B[0m" + " |";
+        box[4] = "|Mine: " +
+                "\u001B[37m" + players.getPlayer().getOwnedMines()[0] + "W " +
+                "\u001B[34m" + players.getPlayer().getOwnedMines()[1] + "U " +
+                "\u001B[32m" + players.getPlayer().getOwnedMines()[2] + "G " +
+                "\u001B[31m" + players.getPlayer().getOwnedMines()[3] + "R " +
+                "\u001B[30m" + players.getPlayer().getOwnedMines()[4] + "K "  +
+                "\u001B[0m" + "    |";
+        box[5] = " ------------------------- ";
+        return box;
+    }
+
+    public String[][] makeBoardPlayers(List<ClientConnectionHandler> board) {
+        int size = board.size();
+        String[][] boxArray = new String[size][6];
+        for (int i = 0; i < size; i++) {
+            ClientConnectionHandler player = board.get(i);
+            boxArray[i][0] = boxMakerPlayers(player)[0];
+            boxArray[i][1] = boxMakerPlayers(player)[1];
+            boxArray[i][2] = boxMakerPlayers(player)[2];
+            boxArray[i][3] = boxMakerPlayers(player)[3];
+            boxArray[i][4] = boxMakerPlayers(player)[4];
+            boxArray[i][5] = boxMakerPlayers(player)[5];
+        }
+        return boxArray;
+    }
+
+    public String printBoardPlayers(List<ClientConnectionHandler> board) {
+        String header = "*.______________________________________________.* PLAYERS *._____________________________________________.*" + "\n";
+        String boardToPrint;
+        String[][] bx = makeBoardPlayers(board);
+        String firstLine = "";
+        String secondLine = "";
+        String thirdLine = "";
+        String fourthLine = "";
+        String fifthLine = "";
+        String sixthLine = "";
+        StringBuffer sb = new StringBuffer();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append(bx[i][0]);
+            firstLine = sb.toString();
+        }
+        sb = new StringBuffer();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append(bx[i][1]);
+            secondLine = sb.toString();
+        }
+        sb = new StringBuffer();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append(bx[i][2]);
+            thirdLine = sb.toString();
+        }
+        sb = new StringBuffer();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append(bx[i][3]);
+            fourthLine = sb.toString();
+        }
+        sb = new StringBuffer();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append(bx[i][4]);
+            fifthLine = sb.toString();
+        }
+        sb = new StringBuffer();
+        for (int i = 0; i < board.size(); i++) {
+            sb.append(bx[i][5]);
+            sixthLine = sb.toString();
+        }
+        boardToPrint =
+                firstLine + "\n" + secondLine + "\n" + thirdLine + "\n" + fourthLine + "\n" + fifthLine +"\n" + sixthLine;
+
+        return header + boardToPrint;
+    }
+
+    public String[] boxMakerReserved(Mine mine) {
+        String color = colorCodeCreator(mine.getColor());
+        String[] box = new String[4];
+        box[0] = color + " ------------------------- " + "\u001B[0m";
+        box[1] = color + "|Points :" + mine.getPoints() + "                |" + "\u001B[0m";
+        box[2] = color + "|Cost: " +
+                "\u001B[37m" + mine.getCost()[0] + "W " +
+                "\u001B[34m" + mine.getCost()[1] + "U " +
+                "\u001B[32m" + mine.getCost()[2] + "G " +
+                "\u001B[31m" + mine.getCost()[3] + "R " +
+                "\u001B[30m" + mine.getCost()[4] + "K " + color + "    |" +
+                "\u001B[0m";
+        box[3] = color + " ------------------------- " + "\u001B[0m";
+        return box;
+    }
+
+    public String[][] makeBoardReserved(LinkedList<Mine> board) {
+        int size = board.size();
+        String[][] boxArray = new String[size][4];
+        for (int i = 0; i < size; i++) {
+            Mine mine = board.get(i);
+            boxArray[i][0] = boxMakerReserved(mine)[0];
+            boxArray[i][1] = boxMakerReserved(mine)[1];
+            boxArray[i][2] = boxMakerReserved(mine)[2];
+            boxArray[i][3] = boxMakerReserved(mine)[3];
+        }
+        return boxArray;
+    }
+
+    public String printBoardReserved(LinkedList<Mine> board) {
+        String header = "*.__________________________________________.* CARDS RESERVED *.__________________________________________.*" + "\n";
+        String boardToPrint;
+        if (board.size() == 0) {
+            boardToPrint = "                                         You have no cards reserved";
+        } else {
+            String[][] bx = makeBoardReserved(board);
+            String firstLine = "";
+            String secondLine = "";
+            String thirdLine = "";
+            String fourthLine = "";
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < board.size(); i++) {
+                sb.append(bx[i][0]);
+                firstLine = sb.toString();
+            }
+            sb = new StringBuffer();
+            for (int i = 0; i < board.size(); i++) {
+                sb.append(bx[i][1]);
+                secondLine = sb.toString();
+            }
+            sb = new StringBuffer();
+            for (int i = 0; i < board.size(); i++) {
+                sb.append(bx[i][2]);
+                thirdLine = sb.toString();
+            }
+            sb = new StringBuffer();
+            for (int i = 0; i < board.size(); i++) {
+                sb.append(bx[i][3]);
+                fourthLine = sb.toString();
+            }
+            boardToPrint =
+                    firstLine + "\n" + secondLine + "\n" + thirdLine + "\n" + fourthLine;
+        }
+        return header + boardToPrint;
+    }
 }

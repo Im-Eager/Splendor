@@ -12,7 +12,6 @@ package academy.mindswap.game;
 import academy.mindswap.cards.Card;
 import academy.mindswap.cards.Lord;
 import academy.mindswap.cards.Mine;
-import academy.mindswap.game.decks.OriginalDeck;
 import academy.mindswap.server.ClientConnectionHandler;
 import academy.mindswap.utils.Messages;
 
@@ -21,7 +20,6 @@ import java.util.*;
 public class Game implements Runnable {
 
     private String command;
-    private Game game;
     private int[] bank;
     private final List<ClientConnectionHandler> players;
     private boolean winner;
@@ -35,7 +33,6 @@ public class Game implements Runnable {
     private LinkedList<Mine> deckTier1 = new LinkedList<Mine>();
 
     PrintBoard printBoard = new PrintBoard();
-
 
     public Game(List players, List<Card> deck) {
 
@@ -57,7 +54,6 @@ public class Game implements Runnable {
         run();
     }
 
-
     private void gameSetup() {
 /*
         PrintToTerminalGame.startScreen();
@@ -70,7 +66,6 @@ public class Game implements Runnable {
 */
 
         fillBank();
-
 
         ArrayList<LinkedList<Mine>> tiersCardGiver = new ArrayList<>();
 
@@ -86,7 +81,7 @@ public class Game implements Runnable {
             }
         }
 
-        for (int i = 0; i < this.players.size(); i++) {
+        for (int i = 0; i < this.players.size() + 1; i++) {
             Lord cardToGive = this.deckTier4.get(i);
             this.deckTier4.remove(cardToGive);
             this.boardLords.put("p4" + (i + 1), cardToGive);
@@ -118,35 +113,93 @@ public class Game implements Runnable {
         return false;
     }
 
-    public Mine reserveCard(String message) {
-        return board.get(message);
+    public void reserveCard(String message, ClientConnectionHandler player) {
+        player.getPlayer().setReservedCard(board.get(message));
+        player.getPlayer().setGold(1);
+        replaceCard(message);
+        player.send(Messages.GOLD_TOKEN_AWARDED);
+    }
+
+    public void replaceCard(String message) {
+        if (message.charAt(2) == '1') {
+            Mine card = this.deckTier1.get(0);
+            this.deckTier1.remove(card);
+            System.out.println(message);
+            this.board.put(message, card);
+        }
+        if (message.charAt(2) == '2') {
+            Mine card = this.deckTier2.get(0);
+            this.deckTier2.remove(card);
+            this.board.put(message, card);
+        }
+        if (message.charAt(2) == '3') {
+            Mine card = this.deckTier3.get(0);
+            this.deckTier3.remove(card);
+            this.board.put(message, card);
+        }
     }
 
     public void buyCard(String message, ClientConnectionHandler player) {
+        boolean isPayed = true;
+        int index = 0;
+        int[] mineCost = board.get(message).getCost();
+        int[] playerBank = player.getPlayer().getBank();
+        int[] playerMines = player.getPlayer().getOwnedMines();
+        int[] mineCostBuffer = new int[5];
 
-        int[] temp = player.getPlayer().getBank();
-
-        for (int i = 0; i < board.get(message).getCost().length; i++) {
-            temp[i] -= board.get(message).getCost()[i];
-
-            if (board.get(message).getCost()[0] >= player.getPlayer().getBank()[0] &&
-                    board.get(message).getCost()[1] <= player.getPlayer().getBank()[1]
-                    || board.get(message).getCost()[1] <= player.getPlayer().getBank()[1] + player.getPlayer().getBank()[5] &&
-                    board.get(message).getCost()[2] <= player.getPlayer().getBank()[2]
-                    || board.get(message).getCost()[2] <= player.getPlayer().getBank()[2] + player.getPlayer().getBank()[5] &&
-                    board.get(message).getCost()[3] <= player.getPlayer().getBank()[4]
-                    || board.get(message).getCost()[3] <= player.getPlayer().getBank()[3] + player.getPlayer().getBank()[5] &&
-                    board.get(message).getCost()[4] <= player.getPlayer().getBank()[4]
-                    || board.get(message).getCost()[4] <= player.getPlayer().getBank()[4] + player.getPlayer().getBank()[5]) {
-
-
-                player.getPlayer().setScore(player.getPlayer().getScore() + board.get(message).getPoints());
-                player.getPlayer().setBank(temp);
-                return;
-            }
+        switch (board.get(message).getColor()) {
+            case "White" -> index = 0;
+            case "Blue" -> index = 1;
+            case "Green" -> index = 2;
+            case "Red" -> index = 3;
+            case "Black" -> index = 4;
         }
 
-        player.send(Messages.CANT_BUY);
+        for (int i = 0; i < mineCost.length; i++) {
+            mineCost[i] -= playerMines[i];
+            if (mineCost[i] > 0) {
+                isPayed = false;
+            }
+            if (mineCost[i] < 0) {
+                mineCost[i] = 0;
+            }
+            mineCostBuffer[i] = mineCost[i];
+        }
+        if (isPayed) {
+            player.getPlayer().setOwnedMines(index);
+            replaceCard(message);
+            return;
+        }
+
+        isPayed = true;
+        for (int i = 0; i < mineCost.length; i++) {
+            player.send(mineCostBuffer[i] + " minebuffer1");
+            mineCost[i] -= playerBank[i];
+            if (mineCost[i] > 0) {
+                isPayed = false;
+            }
+            if (mineCost[i] < 0) {
+                mineCost[i] = 0;
+            }
+        }
+        if (isPayed) {
+            for (int i = 0; i < mineCost.length; i++) {
+                player.send(playerBank[i] + " playerbank");
+                player.send(mineCostBuffer[i] + " minebuffer2");
+                playerBank[i] -= mineCostBuffer[i];
+            }
+            player.getPlayer().setBank(playerBank);
+            player.getPlayer().setOwnedMines(index);
+            replaceCard(message);
+            return;
+        }
+        if (playerBank[5] - Arrays.stream(mineCost).reduce(0, Integer::sum) >= 0) {
+            player.getPlayer().setGold(-1 * (playerBank[5] - Arrays.stream(mineCost).reduce(0, Integer::sum)));
+            player.getPlayer().setOwnedMines(index);
+            replaceCard(message);
+        } else {
+            player.send(Messages.CANT_BUY);
+        }
     }
 
     public void grabGems(String message, ClientConnectionHandler player) {
@@ -155,82 +208,82 @@ public class Game implements Runnable {
 
             int[] temp = player.getPlayer().getBank();
 
-            for (int i = 0; i < temp.length; i++) {
-                temp[i] = message.substring(3).charAt(i);
+            for (int i = 0; i < temp.length - 1; i++) {
+                temp[i] += Integer.parseInt(String.valueOf(message.substring(2).charAt(i)));
             }
 
             if (Arrays.stream(temp).reduce(0, Integer::sum) > 10) {
-                System.out.println(Messages.MORE_THAN_10);
+                player.send(Messages.MORE_THAN_10);
+                return;
             } else {
                 player.getPlayer().setBank(temp);
-
-            }
-            player.send(Messages.TOKEN_STACK_LOW);
-        }
-    }
-
-    public boolean checkWinner(ClientConnectionHandler player){
-       return player.getPlayer().getScore() >= 15;
-    }
-
-        @Override
-        public void run () {
-
-            ClientConnectionHandler playerPlaying = players.stream().findFirst().get();
-            try {
-
-                while (!winner) {
-                    playerPlaying.setHasPlayerGivenCommand(false);
-                    playerPlaying.getPlayer().setPlaying(true);
-
-                    players.forEach(p -> p.send("LINHA 4 DO BOARD"));
-                    players.forEach(p -> p.send(printBoard.printBoard(players, board, boardLords, bank)));
-                    players.forEach(p -> p.send(printBoard.printBoardReservedCards(p.getPlayer().getReservedCards())));
-
-                    players.forEach(p -> p.send("COLOCAR IMPRESSÃO DA MÃO RESPECTIVA DE CADA JOGADOR"));
-                    players.forEach(p -> p.send("Playing: " + playerPlaying.getName()));
-                    playerPlaying.send("It is your turn to play!Type /help to receive a list of commands. \nWaiting for your command... ");
-
-                    while (true) {
-                        Thread.sleep(500);
-                        if (playerPlaying.getHasPlayerGivenCommand()) {
-                            break;
-                        }
-                    }
-                    switch (command.charAt(1)) {
-                        case 'H' -> {
-                            playerPlaying.send(Messages.COMMAND_HELP);
-                        }
-                        case 'B' -> {
-                            buyCard(command.substring(3), playerPlaying);
-                            // PLAYER PLAYING = NEXT
-                        }
-                        case 'G' -> {
-                            this.game.grabGems(command, playerPlaying);
-                            // PLAYER PLAYING = NEXT
-
-                        }
-                        case 'R' -> {
-                            playerPlaying
-                                    .getPlayer()
-                                    .getReservedCards()
-                                    .add(reserveCard(command.substring(3)));
-                            playerPlaying
-                                    .getPlayer()
-                                    .increaseGold();
-
-                        }
-                        default -> {
-                            playerPlaying.send(Messages.IMPOSSIBLE_MOVE);
-                        }
-                    }
-                   if( checkWinner(playerPlaying)) {
-                       playerPlaying.send(Messages.I_WIN_MOTHERFUCKERS);
-                   }
-
+                for (int i = 0; i < temp.length - 1; i++) {
+                    this.bank[i] -= Integer.parseInt(String.valueOf(message.substring(2).charAt(i)));
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                return;
             }
         }
+        player.send(Messages.TOKEN_STACK_LOW);
     }
+
+    public boolean checkWinner(ClientConnectionHandler player) {
+        return player.getPlayer().getScore() >= 15;
+    }
+
+    @Override
+    public void run() {
+        int counter = 0;
+        try {
+            while (!winner) {
+                ClientConnectionHandler playerPlaying = players.stream().toList().get(counter);
+
+                playerPlaying.setHasPlayerGivenCommand(false);
+                playerPlaying.getPlayer().setPlaying(true);
+
+                players.forEach(p -> p.send(printBoard.printBoardLord(boardLords)));
+                players.forEach(p -> p.send(printBoard.printBoard(board)));
+                players.forEach(p -> p.send(printBoard.printBank(bank)));
+                players.forEach(p -> p.send(printBoard.printBoardPlayers(players)));
+                players.forEach(p -> p.send(printBoard.printBoardReserved(p.getPlayer().getReservedCards())));
+                players.forEach(p -> p.send("Playing: " + playerPlaying.getName()));
+                playerPlaying.send("It is your turn to play! Type /help to receive a list of commands. \nWaiting for your command... ");
+
+                while (true) {
+                    Thread.sleep(500);
+                    if (playerPlaying.getHasPlayerGivenCommand()) {
+                        break;
+                    }
+                }
+                switch (command.charAt(1)) {
+                    case 'H' -> {
+                        playerPlaying.send(Messages.COMMAND_HELP);
+                    }
+                    case 'B' -> {
+                        buyCard(command.substring(2), playerPlaying);
+                        // PLAYER PLAYING = NEXT
+                    }
+                    case 'G' -> {
+                        grabGems(command, playerPlaying);
+                        // PLAYER PLAYING = NEXT
+                    }
+                    case 'R' -> {
+                        reserveCard(command.substring(2), playerPlaying);
+                    }
+                    default -> {
+                        playerPlaying.send(Messages.IMPOSSIBLE_MOVE);
+                    }
+                }
+                if (checkWinner(playerPlaying)) {
+                    playerPlaying.send(Messages.I_WIN_MOTHERFUCKERS);
+                }
+
+                counter++;
+                if (counter > players.size()){
+                    counter = 0;
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+}
