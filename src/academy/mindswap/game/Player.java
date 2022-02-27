@@ -1,3 +1,11 @@
+/**
+ * @(#)Player.java        1.0 28/02/2022
+ *
+ * Copyright© MindSwap Academy - Diogo Noronha, Luis Faria, Ricardo Paiva, Tiago Miranda
+ * All rights reserved.
+ *
+ * This software was produced to become our first group project.
+ */
 package academy.mindswap.game;
 
 import academy.mindswap.cards.Lord;
@@ -23,8 +31,8 @@ public class Player {
     public Player(String name) {
         this.name = name;
         this.score = 0;
-        this.ownedMines = new int[]{0, 0, 0, 0, 0};
-        this.bank = new int[]{0, 0, 0, 0, 0, 0};
+        this.ownedMines = new int[] {0, 0, 0, 0, 0};
+        this.bank = new int[] {0, 0, 0, 0, 0, 0};
         this.hasPlayed = false;
         this.playerReservedCards = new LinkedList<Mine>();
         //Position of bank index[0] = (W)hite, index[1] = Bl(U)e, index[2] = (G)reen, index[3] = (R)ed, index[4] = Blac(K), index[5] = Go(L)d
@@ -52,13 +60,11 @@ public class Player {
             temp[i] = gems.charAt(i);
         }
 
-        int bankTotal = Arrays.stream(temp).reduce(0, Integer::sum);
-
-        if (bankTotal > 10){
+        if (Arrays.stream(temp).reduce(0, Integer::sum) > 10){
             System.out.println(Messages.MORE_THAN_10);
             return;
         }
-        bank = temp;
+        this.bank = temp;
     }
 
 
@@ -126,6 +132,10 @@ public class Player {
         return score >= 15 ? Messages.I_WIN_MOTHERFUCKERS : Messages.KEEP_PLAYING;
     }
 
+    public void increaseGold(){
+        this.bank[5] += 1;
+    }
+
     public void setPlaying(Boolean isPlaying){
         this.isPlaying = isPlaying;
     }
@@ -143,7 +153,7 @@ public class Player {
     }
 
     public int[] getBank() {
-        return bank;
+        return this.bank;
     }
 
     public String getName() {

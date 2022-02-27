@@ -1,3 +1,12 @@
+/**
+ * @(#)Game.java        1.0 28/02/2022
+ *
+ * Copyright© MindSwap Academy - Diogo Noronha, Luis Faria, Ricardo Paiva, Tiago Miranda
+ * All rights reserved.
+ *
+ * This software was produced to become our first group project.
+ */
+
 package academy.mindswap.game;
 
 import academy.mindswap.cards.Card;
@@ -11,13 +20,9 @@ import java.util.*;
 public class Game implements Runnable {
 
     private String command;
-
     private Game game;
-
     private int[] bank;
-
     private final List<ClientConnectionHandler> players;
-
     private boolean winner;
 
     private HashMap<String, Mine> board = new HashMap<>();
@@ -55,7 +60,7 @@ public class Game implements Runnable {
 /*
         PrintToTerminalGame.startScreen();
         try {
-            Thread.sleep(600);
+            Thread.sleep(3000);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -103,9 +108,17 @@ public class Game implements Runnable {
     }
 
 
+    public boolean bankHasChips(ClientConnectionHandler player) {
+        for (int i = 0; i < bank.length; i++) {
+            if (bank[i] > 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public Mine reserveCard(String message) {
         return board.get(message);
-
     }
 
     public void buyCard(String message, ClientConnectionHandler player) {
@@ -125,40 +138,41 @@ public class Game implements Runnable {
                     board.get(message).getCost()[4] <= player.getPlayer().getBank()[4]
                     || board.get(message).getCost()[4] <= player.getPlayer().getBank()[4] + player.getPlayer().getBank()[5]) {
 
+
                 player.getPlayer().setScore(player.getPlayer().getScore() + board.get(message).getPoints());
                 player.getPlayer().setBank(temp);
-
+                return;
             }
         }
+
+        player.send(Messages.CANT_BUY);
     }
 
+    public void grabGems(String message, ClientConnectionHandler player) {
 
-    /* public void verifyCommand(String command){
-        switch (command.charAt(1)) {
-            case 'B' -> players.stream()
-                    .findFirst().get()
-                    .getPlayer()
-                    .buyCard(command.substring(3));
+        if(bankHasChips(player)){
 
-            case 'G' -> players.stream()
-                    .findFirst().get()
-                    .getPlayer()
-                    .grabGems(command.substring(3));
+        int[] temp = player.getPlayer().getBank();
 
-            case 'R' -> players.stream()
-                    .findFirst().get()
-                    .getPlayer()
-                    .reserveCard(command.substring(3));
+        for (int i = 0; i < temp.length; i++) {
+            temp[i] = message.substring(3).charAt(i);
+        }
+        if (Arrays.stream(temp).reduce(0, Integer::sum) > 10) {
+            System.out.println(Messages.MORE_THAN_10);
+            return;
         }
 
-    }*/
+        player.getPlayer().setBank(temp);
+        }
+
+        player.send(Messages.TOKEN_STACK_LOW);
+    }
+
 
     @Override
     public void run() {
 
         ClientConnectionHandler playerPlaying = players.stream().findFirst().get();
-//        ClientConnectionHandler nextPlayer = players.stream().iterator().next();
-
         try {
 
             while (!winner) {
@@ -169,7 +183,7 @@ public class Game implements Runnable {
                 players.forEach(p -> p.send(printBoard.printBoard(players, board, boardLords, bank)));
                 players.forEach(p -> p.send(printBoard.printBoardReservedCards(p.getPlayer().getReservedCards())));
 
-                players.forEach(p -> p.send("COLOCAR IMPRESSÂO DA MÃO RESPECTIVA DE CADA JOGADOR"));
+                players.forEach(p -> p.send("COLOCAR IMPRESSÃO DA MÃO RESPECTIVA DE CADA JOGADOR"));
                 players.forEach(p -> p.send("Playing: " + playerPlaying.getName()));
                 playerPlaying.send("It is your turn to play!Type /help to receive a list of commands. \nWaiting for your command... ");
 
@@ -180,39 +194,42 @@ public class Game implements Runnable {
                     }
                 }
 
-                playerPlaying.send("Cheguei");
-
                 switch (command.charAt(1)) {
                     case 'H' -> {
                         playerPlaying.send(Messages.COMMAND_HELP);
-                        continue;
+                        break;
                     }
 
                     case 'B' -> {
                         buyCard(command.substring(3), playerPlaying);
                         // PLAYER PLAYING = NEXT
-                        continue;
+                        return;
+
                     }
                     case 'G' -> {
-                        playerPlaying
-                                .getPlayer()
-                                .grabGems(command.substring(3));
+                        game.grabGems(command, playerPlaying);
                         // PLAYER PLAYING = NEXT
+                        return;
 
-                        continue;
                     }
                     case 'R' -> {
                         playerPlaying
                                 .getPlayer()
                                 .getReservedCards()
                                 .add(reserveCard(command.substring(3)));
-                        // PLAYER PLAYING = NEXT
+                        playerPlaying
+                                .getPlayer()
+                                .increaseGold();
+                        return;
 
-                        continue;
                     }
 
 
-                    default -> playerPlaying.send(Messages.IMPOSSIBLE_MOVE);
+                    default -> {
+                        playerPlaying.send(Messages.IMPOSSIBLE_MOVE);
+                        break;
+                    }
+
                 }
             }
         } catch (InterruptedException e) {

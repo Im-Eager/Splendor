@@ -1,8 +1,17 @@
+/**
+ * @(#)Card.java        1.0 28/02/2022
+ *
+ * Copyright© MindSwap Academy - Diogo Noronha, Luis Faria, Ricardo Paiva, Tiago Miranda
+ * All rights reserved.
+ *
+ * This software was produced to become our first group project.
+ */
+
 package academy.mindswap.cards;
 
 public abstract class Card {
     protected int points;
-    protected int tier; //levels Lord 4, High 3, Medium 2, Low 1
+    protected int tier;
     protected String color;
     protected int[] cost;
 
