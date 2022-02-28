@@ -40,25 +40,26 @@ On their turn, a player must choose to perform only one of the following four ac
 
 How to play:
 
-1 - Initialize Sever trough Main.
-2 - Initialize Client
+1 - Initialize Sever through Main.
+2 - Initialize 4 Clients
 
-From this point on you can play the game through input to the console using the "\" before the commands bellow to perform each action.
+From this point on you can play the game through input to the console using the "/" before the commands bellow to perform each action.
 
 Then,
 You will have an updated board each round where you choose several actions:
 
 1)	Take 3 tokens of different colors or take 2 tokens of the same color.
-This action is only possible if there are at least 4 tokens of the chosen color left when the player takes them 
-- It is possible to perform this action though console input of:  GRAB + number of each token needed according the following format: GRAB 0W 0U 0G 0R 0B 0L
+This action is only possible if there are at least 4 tokens of the chosen color left when the player takes them. 
+- It is possible to perform this action though console input of:  G + number of each token needed according the following format: /G11100.
+Please be aware that each number represents each color, that beeing: /G1 -> White, 1-> Blue, 1 -> Green, 0-> Red, 0 -> Bleck.
 
 2)	Reserve 1 Mine card and take 1 Go(L)d token.
-- It is possible to perform this action though console input of:  RESERVE + Position of the card on the board
+- It is possible to perform this action though console input of:  /Rp (Plus Card position), eg: /Rp11.
 
 3)	Purchase 1 face-up Mine card from the middle of the table or a previously reserved one.
-- It is possible to perform this action though console input of: BUY 0W 0U 0G 0R 0B 0L
+- It is possible to perform this action though console input of: /Bp (Plus card position), eg: /Bp11.
 
-You can always get help by typing HELP to console
+!!!You can always get help by typing /H to console!!!
 
 Note: You can only  Buy or Reserve a card if you have sufficient funds to it, any kind of fraudulent purchase will be blocked by our bulletproof code~.
 
