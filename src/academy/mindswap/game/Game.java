@@ -14,6 +14,7 @@ import academy.mindswap.cards.Lord;
 import academy.mindswap.cards.Mine;
 import academy.mindswap.server.ClientConnectionHandler;
 import academy.mindswap.utils.Messages;
+import academy.mindswap.utils.PrintToTerminalGame;
 
 import java.util.*;
 
@@ -62,15 +63,6 @@ public class Game implements Runnable {
     }
 
     private void gameSetup() {
-/*
-        PrintToTerminalGame.startScreen();
-        try {
-            Thread.sleep(3000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        PrintToTerminalGame.screenSetup();
-*/
 
         fillBank();
 
@@ -311,6 +303,15 @@ public class Game implements Runnable {
     @Override
     public void run() {
         int counter = 0;
+
+        players.forEach(p -> p.send(PrintToTerminalGame.startScreen()));
+
+        try {
+            Thread.sleep(3000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
         try {
             while (!winner) {
                 this.validCommand = true;
