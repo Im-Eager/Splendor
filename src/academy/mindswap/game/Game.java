@@ -344,6 +344,7 @@ public class Game implements Runnable {
 
                 switch (command.charAt(1)) {
                     case 'H' -> {playerPlaying.send(Messages.COMMAND_HELP);
+                                this.validCommand = false;
                                 Thread.sleep(threadSleep);}
                     case 'B' -> buyCard(command.substring(2), playerPlaying);
                     case 'G' -> grabGems(command.substring(2), playerPlaying);
