@@ -78,6 +78,10 @@ public class Player {
         this.playerReservedCards.add(mine);
     }
 
+    public void removeReservedCard (Mine mine){
+        this.playerReservedCards.remove(mine);
+    }
+
     public void setOwnedMines(int index){
         this.ownedMines[index] += 1;
     }

@@ -204,6 +204,8 @@ public class Game implements Runnable {
             player.getPlayer().setOwnedMines(index);
             if (message.length() == 3){
                 replaceCard(message);
+            } else {
+                player.getPlayer().removeReservedCard(boardSum.get(message));
             }
             return;
         }
@@ -226,6 +228,8 @@ public class Game implements Runnable {
             player.getPlayer().setOwnedMines(index);
             if (message.length() == 3){
                 replaceCard(message);
+            } else {
+                player.getPlayer().removeReservedCard(boardSum.get(message));
             }
             return;
         }
@@ -234,6 +238,8 @@ public class Game implements Runnable {
             player.getPlayer().setOwnedMines(index);
             if (message.length() == 3){
                 replaceCard(message);
+            } else {
+                player.getPlayer().removeReservedCard(boardSum.get(message));
             }
         } else {
             player.send(Messages.CANT_BUY);
