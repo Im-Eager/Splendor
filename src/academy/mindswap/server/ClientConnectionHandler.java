@@ -45,7 +45,6 @@ public class ClientConnectionHandler implements Runnable {
             Scanner in = new Scanner(clientSocket.getInputStream());
             while (in.hasNext()) {
                 message = in.nextLine();
-                //hasPlayerGivenCommand = true;
                 if (message.equals("")) {
                     continue;
                 }
@@ -53,6 +52,8 @@ public class ClientConnectionHandler implements Runnable {
                 if (this.player.isPlaying() && isCommand(message)){
                     game.setCommand(message);
                     this.hasPlayerGivenCommand = true;
+                } else if (isCommand(message)){
+
                 }
             }
         } catch (IOException e) {
@@ -63,6 +64,7 @@ public class ClientConnectionHandler implements Runnable {
     }
 
     private boolean isCommand(String message) {
+
         return message.startsWith("/");
     }
 

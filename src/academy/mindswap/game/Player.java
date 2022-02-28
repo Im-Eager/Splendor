@@ -81,4 +81,8 @@ public class Player {
     public void setOwnedMines(int index){
         this.ownedMines[index] += 1;
     }
+
+    public void setOwnedLord (Lord lord){
+        this.ownedLord = lord;
+    }
 }

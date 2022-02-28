@@ -249,10 +249,10 @@ public class PrintBoard {
         return header + boardToPrint;
     }
 
-    public String[] boxMakerReserved(Mine mine) {
+    public String[] boxMakerReserved(Mine mine, int index) {
         String color = colorCodeCreator(mine.getColor());
         String[] box = new String[4];
-        box[0] = color + " ------------------------- " + "\u001B[0m";
+        box[0] = color + " ------------p"+index+"----------- " + "\u001B[0m";
         box[1] = color + "|Points :" + mine.getPoints() + "                |" + "\u001B[0m";
         box[2] = color + "|Cost: " +
                 "\u001B[37m" + mine.getCost()[0] + "W " +
@@ -270,10 +270,10 @@ public class PrintBoard {
         String[][] boxArray = new String[size][4];
         for (int i = 0; i < size; i++) {
             Mine mine = board.get(i);
-            boxArray[i][0] = boxMakerReserved(mine)[0];
-            boxArray[i][1] = boxMakerReserved(mine)[1];
-            boxArray[i][2] = boxMakerReserved(mine)[2];
-            boxArray[i][3] = boxMakerReserved(mine)[3];
+            boxArray[i][0] = boxMakerReserved(mine, i)[0];
+            boxArray[i][1] = boxMakerReserved(mine, i)[1];
+            boxArray[i][2] = boxMakerReserved(mine, i)[2];
+            boxArray[i][3] = boxMakerReserved(mine, i)[3];
         }
         return boxArray;
     }
