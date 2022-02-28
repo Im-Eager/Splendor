@@ -19,6 +19,7 @@ import java.util.*;
 
 public class Game implements Runnable {
 
+    private int threadSleep;
     private String command;
     private int[] bank;
     private final List<ClientConnectionHandler> players;
@@ -36,6 +37,8 @@ public class Game implements Runnable {
 
 
     public Game(List players, List<Card> deck) {
+
+        this.threadSleep = 2000;
 
         this.printBoard = new PrintBoard();
         this.validCommand = true;
@@ -130,7 +133,7 @@ public class Game implements Runnable {
 
         if (!validCommand){
             player.send("Insert a valid command.");
-            Thread.sleep(1000);
+            Thread.sleep(threadSleep);
             return;
         }
 
@@ -146,7 +149,7 @@ public class Game implements Runnable {
             if (toTest < 0){
                 this.validCommand = false;
                 player.send("The bank does not have enough chips.");
-                Thread.sleep(500);
+                Thread.sleep(threadSleep);
                 return;
             }
         }
@@ -175,7 +178,7 @@ public class Game implements Runnable {
 
         if (!(boardSum.keySet().stream().anyMatch(p -> p.equals(message)))){
             player.send("Chose a valid position on the board.");
-            Thread.sleep(1000);
+            Thread.sleep(threadSleep);
             this.validCommand = false;
             return;
         }
@@ -243,14 +246,14 @@ public class Game implements Runnable {
     private void reserveCard(String message, ClientConnectionHandler player) throws InterruptedException {
         if (!(board.keySet().stream().anyMatch(p -> p.equals(message)))){
             player.send("Chose a valid position on the board.");
-            Thread.sleep(1000);
+            Thread.sleep(threadSleep);
             this.validCommand = false;
             return;
         }
 
         if (player.getPlayer().getReservedCards().size() == 3) {
             player.send("You already have three cards reserved.");
-            Thread.sleep(1000);
+            Thread.sleep(threadSleep);
             this.validCommand = false;
             return;
         }
@@ -320,14 +323,15 @@ public class Game implements Runnable {
                 boardPrints(playerPlaying);
 
                 while (true) {
-                    Thread.sleep(500);
+                    Thread.sleep(threadSleep);
                     if (playerPlaying.getHasPlayerGivenCommand()) {
                         break;
                     }
                 }
 
                 switch (command.charAt(1)) {
-                    case 'H' -> playerPlaying.send(Messages.COMMAND_HELP);
+                    case 'H' -> {playerPlaying.send(Messages.COMMAND_HELP);
+                                Thread.sleep(threadSleep);}
                     case 'B' -> buyCard(command.substring(2), playerPlaying);
                     case 'G' -> grabGems(command.substring(2), playerPlaying);
                     case 'R' -> reserveCard(command.substring(2), playerPlaying);
