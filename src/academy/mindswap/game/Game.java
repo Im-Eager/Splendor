@@ -331,6 +331,7 @@ public class Game implements Runnable {
                     case 'B' -> buyCard(command.substring(2), playerPlaying);
                     case 'G' -> grabGems(command.substring(2), playerPlaying);
                     case 'R' -> reserveCard(command.substring(2), playerPlaying);
+                    default -> this.validCommand = false;
                 }
 
                 checkLord(playerPlaying);

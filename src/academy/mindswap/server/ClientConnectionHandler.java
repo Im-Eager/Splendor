@@ -1,9 +1,9 @@
 /**
- * @(#)ClientConnectionHandler.java        1.0 28/02/2022
- *
+ * @(#)ClientConnectionHandler.java 1.0 28/02/2022
+ * <p>
  * Copyright© MindSwap Academy - Diogo Noronha, Luis Faria, Ricardo Paiva, Tiago Miranda
  * All rights reserved.
- *
+ * <p>
  * This software was produced to become our first group project.
  */
 
@@ -49,10 +49,10 @@ public class ClientConnectionHandler implements Runnable {
                     continue;
                 }
                 server.broadcast(name, message);
-                if (this.player.isPlaying() && isCommand(message)){
+                if (this.player.isPlaying() && isCommand(message)) {
                     game.setCommand(message);
                     this.hasPlayerGivenCommand = true;
-                } else if (isCommand(message)){
+                } else if (isCommand(message)) {
 
                 }
             }
@@ -68,7 +68,7 @@ public class ClientConnectionHandler implements Runnable {
         return message.startsWith("/");
     }
 
-/*    public void dealWithCommand(String message) *//*throws IOException *//* {
+    /*    public void dealWithCommand(String message) *//*throws IOException *//* {
         if (isCommand(message)) {
             String description = message.toUpperCase().split(" ")[0];
             Command command = Command.getCommandFromDescription(description);
@@ -110,11 +110,11 @@ public class ClientConnectionHandler implements Runnable {
         }
     }
 
-    public void setHasPlayerGivenCommand(boolean setBoolean){
+    public void setHasPlayerGivenCommand(boolean setBoolean) {
         this.hasPlayerGivenCommand = false;
     }
 
-    public boolean getHasPlayerGivenCommand(){
+    public boolean getHasPlayerGivenCommand() {
         return this.hasPlayerGivenCommand;
     }
 
@@ -130,11 +130,11 @@ public class ClientConnectionHandler implements Runnable {
         return player;
     }
 
-    public void setGame(Game game){
+    public void setGame(Game game) {
         this.game = game;
     }
 
-    public void setPlayer(Player player){
+    public void setPlayer(Player player) {
         this.player = player;
     }
 
