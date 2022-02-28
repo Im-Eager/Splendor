@@ -202,7 +202,9 @@ public class Game implements Runnable {
         }
         if (isPayed) {
             player.getPlayer().setOwnedMines(index);
-            replaceCard(message);
+            if (message.length() == 3){
+                replaceCard(message);
+            }
             return;
         }
 
@@ -222,13 +224,17 @@ public class Game implements Runnable {
             }
             player.getPlayer().setBank(playerBank);
             player.getPlayer().setOwnedMines(index);
-            replaceCard(message);
+            if (message.length() == 3){
+                replaceCard(message);
+            }
             return;
         }
         if (playerBank[5] - Arrays.stream(mineCost).reduce(0, Integer::sum) >= 0) {
             player.getPlayer().setGold(-1 * (playerBank[5] - Arrays.stream(mineCost).reduce(0, Integer::sum)));
             player.getPlayer().setOwnedMines(index);
-            replaceCard(message);
+            if (message.length() == 3){
+                replaceCard(message);
+            }
         } else {
             player.send(Messages.CANT_BUY);
             this.validCommand = false;
@@ -351,7 +357,7 @@ public class Game implements Runnable {
                     counter++;
                 }
 
-                if (counter > players.size()) {
+                if (counter > players.size()-1) {
                     counter = 0;
                 }
             }
