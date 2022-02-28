@@ -7,7 +7,7 @@
  * This software was produced to become our first group project.
  */
 
-package academy.mindswap.cards;
+package academy.mindswap.game.cards;
 
 public class Mine extends Card{
 

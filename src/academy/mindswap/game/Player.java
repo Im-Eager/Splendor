@@ -8,11 +8,9 @@
  */
 package academy.mindswap.game;
 
-import academy.mindswap.cards.Lord;
-import academy.mindswap.cards.Mine;
-import academy.mindswap.utils.Messages;
+import academy.mindswap.game.cards.Lord;
+import academy.mindswap.game.cards.Mine;
 
-import java.util.Arrays;
 import java.util.LinkedList;
 
 public class Player {

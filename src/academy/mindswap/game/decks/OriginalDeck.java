@@ -8,9 +8,9 @@
  */
 package academy.mindswap.game.decks;
 
-import academy.mindswap.cards.Card;
-import academy.mindswap.cards.Lord;
-import academy.mindswap.cards.Mine;
+import academy.mindswap.game.cards.Card;
+import academy.mindswap.game.cards.Lord;
+import academy.mindswap.game.cards.Mine;
 
 import java.util.ArrayList;
 import java.util.Arrays;

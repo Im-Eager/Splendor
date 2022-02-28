@@ -9,9 +9,9 @@
 
 package academy.mindswap.game;
 
-import academy.mindswap.cards.Card;
-import academy.mindswap.cards.Lord;
-import academy.mindswap.cards.Mine;
+import academy.mindswap.game.cards.Card;
+import academy.mindswap.game.cards.Lord;
+import academy.mindswap.game.cards.Mine;
 import academy.mindswap.server.ClientConnectionHandler;
 import academy.mindswap.utils.Messages;
 import academy.mindswap.utils.PrintToTerminalGame;
@@ -59,7 +59,7 @@ public class Game implements Runnable {
 
         gameSetup();
 
-        run();
+        //run();
     }
 
     private void gameSetup() {
