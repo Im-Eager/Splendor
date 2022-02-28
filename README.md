@@ -20,7 +20,9 @@ Game components:
 
 Setup
 - Shuffle each Mine and Noble card tier separately, and then place them in a column in the middle of the table in increasing order from bottom to top (tier1, tier2, tier3 and tier4).
-- Then reveal 4 cards from each level.
+- Then reveal 4 cards from each tier.
+Note: For the tier 4, the Lords, the number of cards withdrawn should be 1 more than the number of players. 
+Eg: With 4 players, display 5 Nobles.
 
 The Mine Cards - tier 1, tier 2 and tier 3.
 - To win points, the players must purchase Mine cards. These cards are visible in the middle of the table and may be purchased by all players during the game.
@@ -40,6 +42,8 @@ How to play:
 
 1 - Initialize Sever trough Main.
 2 - Initialize Client
+
+From this point on you can play the game through input to the console using the "\" before the commands bellow to perform each action.
 
 Then,
 You will have an updated board each round where you choose several actions:
